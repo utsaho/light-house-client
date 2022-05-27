@@ -8,7 +8,7 @@ module.exports = {
         themes: [
             {
                 lighHhouse: {
-                    primary: "#a991f7",
+                    primary: "#07e5f5",
                     secondary: "#f6d860",
                     accent: "#37cdbe",
                     neutral: "#3d4451",

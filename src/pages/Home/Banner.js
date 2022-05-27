@@ -1,30 +1,22 @@
-import React from 'react';
+/**
+ * @author utsho
+*/
+
+import React, { useEffect, useState } from 'react';
 
 const Banner = () => {
+    const [services, setServices] = useState([]);
+    useEffect(() => {
+        fetch('http://localhost:5000/services').then(res => res.json()).then(data => setServices(data));
+    }, []);
     return (
         <div className="px-12">
-            <div className="carousel carousel-center p-4 space-x-4 bg-neutral rounded-box">
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=8B7BCDC2" className="rounded-box" />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=500B67FB" className="rounded-box" />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=A89D0DE6" className="rounded-box" />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=225E6693" className="rounded-box" />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=9D9539E7" className="rounded-box" />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=BDC01094" className="rounded-box" />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://api.lorem.space/image/furniture?w=250&h=180&hash=7F5AE56A" className="rounded-box" />
-                </div>
+            <div className="carousel carousel-center p-4 space-x-4 bg-neutral rounded-box h-60">
+                {
+                    services.map(service => <div key={service._id} className="carousel-item">
+                        <img width='250px' src={service.img} className="rounded-box h-full object-cover" alt='' />
+                    </div>)
+                }
             </div>
         </div>
     );

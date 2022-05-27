@@ -69,7 +69,7 @@ const Register = () => {
                                 <label className="label my-0 py-0">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="text" placeholder="Your email" className="input input-bordered" {...register('email', { required: true })} />
+                                <input type="text" placeholder="Your email" className={`input input-bordered ${errors.email ? 'input-error' : ''}`} {...register('email', { required: true })} />
                                 {errors.email && <span className='text-red-500'>email is required</span>}
                             </div>
 
@@ -77,7 +77,7 @@ const Register = () => {
                                 <label className="label my-0 py-0">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="Password" className="input input-bordered" {...register('password', {
+                                <input type="password" placeholder="Password" className={`input input-bordered ${errors.password ? 'input-error' : ''}`} {...register('password', {
                                     required: {
                                         value: true,
                                         message: 'Password is required'
@@ -95,10 +95,14 @@ const Register = () => {
 
 
                             <div className="form-control">
-                                <label htmlFor="policy">
-                                    <input type="checkbox" ref={check} id='policy' onClick={() => checked()} />
-                                    <span className='ml-2'>Accept <span className='text-blue-500'>terms and conditions</span></span>
-                                </label>
+                                <div className="flex">
+                                    <div className='mt-0.5'>
+                                        <input type="checkbox" class="checkbox checkbox-accent checkbox-sm" ref={check} id='policy' onClick={() => checked()} />
+                                    </div>
+                                    <div className=''>
+                                        <span className='ml-2'>Accept <span className='text-blue-500'>terms and conditions</span></span>
+                                    </div>
+                                </div>
                                 {error?.message.split('/')[1].split(')')[0] && <span className='text-red-700 mt-0'>{error?.message.split('/')[1].split(')')[0]}</span>}
                                 <button className={`btn btn-primary text-white mt-1 ${!agree ? 'btn-disabled' : ''}`} style={{ background: 'linear-gradient(to left, rgb(58,117,183), rgb(118,80,175))' }}>Register</button>
                             </div>

@@ -6,7 +6,6 @@ import auth from '../../firebase.init';
 import useToken from '../../hooks/useToken';
 import Navbar from '../Home/Navbar';
 import Loading from '../Shared/Loading';
-import googleSVG from '../../images/svg/google.svg';
 import SocialLogin from './SocialLogin';
 
 const Login = () => {
@@ -39,7 +38,7 @@ const Login = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="text" placeholder="email" className="input input-bordered" {...register('email', {
+                                <input type="text" placeholder="email" className={`input input-bordered ${errors.email ? 'input-error' : ''}`} {...register('email', {
                                     required: {
                                         value: true,
                                         message: 'Email is required'
@@ -53,7 +52,7 @@ const Login = () => {
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="password" className="input input-bordered" {...register('password', {
+                                <input type="password" placeholder="password" className={`input input-bordered ${errors.password ? 'input-error' : ''}`} {...register('password', {
                                     required: {
                                         value: true,
                                         message: 'Password is required'

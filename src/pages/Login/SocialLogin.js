@@ -8,7 +8,7 @@ import Loading from '../Shared/Loading';
 const SocialLogin = () => {
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
     const navigate = useNavigate();
-    const [token] = useToken(user);
+    const [token] = useToken(user?.user);
     if (token) {
         // console.log(token);
         navigate('/', { replace: true });

@@ -4,9 +4,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
 import auth from '../../firebase.init';
 import webLogo from '../../images/logos/website_logo.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 const Navbar = () => {
     const [user] = useAuthState(auth);
     const menu = <>
+        <li> <Link to='/'> <FontAwesomeIcon icon={faHome} />Home </Link> </li>
         {!user && <><li> <Link to='/login'>Login</Link> </li>
             <li className='mx-auto'> <Link to='/register'>Register</Link> </li></>
         }

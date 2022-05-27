@@ -5,6 +5,7 @@ import Login from './pages/Login/Login';
 import Register from './pages/Login/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NotFound from './pages/Shared/NotFound/NotFound';
 function App() {
     return (
         <div className='home mx-auto'>
@@ -12,6 +13,7 @@ function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='*' element={<NotFound />} />
             </Routes>
             <ToastContainer
                 position="bottom-right"
