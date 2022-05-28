@@ -6,6 +6,8 @@ import Register from './pages/Login/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './pages/Shared/NotFound/NotFound';
+import Purchase from './pages/Purchase/Purchase';
+import RequireAuth from './pages/Login/RequireAuth';
 function App() {
     return (
         <div className='home mx-auto'>
@@ -13,6 +15,9 @@ function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/service/:id' element={<RequireAuth>
+                    <Purchase />
+                </RequireAuth>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
             <ToastContainer

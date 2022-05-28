@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import useToken from '../../hooks/useToken';
 import googleSVG from '../../images/svg/google.svg';
@@ -9,9 +9,10 @@ const SocialLogin = () => {
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
     const navigate = useNavigate();
     const [token] = useToken(user?.user);
+    const location = useLocation();
+    const from = location?.state?.from?.pathname || '/';
     if (token) {
-        // console.log(token);
-        navigate('/', { replace: true });
+        navigate(from, { replace: true });
     }
     if (loading) {
         return <Loading></Loading>

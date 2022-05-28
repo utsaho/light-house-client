@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import buy from '../../../images/svg/buy.svg';
 
 const Part = ({ part }) => {
-    const { name, img, description, minOrder, available, price } = part;
+    // const navigate = useNavigate();
+    const { _id, name, img, description, minOrder, available, price } = part;
     return (
         <div class="card-compact w-full bg-base-100 shadow-xl rounded-2xl">
             <figure className='h-60 flex justify-center'><img className='rounded-t-2xl h-full object-cover' src={img} alt={name} /></figure>
@@ -21,9 +23,10 @@ const Part = ({ part }) => {
                 </div>
             </div>
             <div class="card-actions justify-end m-2">
-                <button class="btn btn-primary hover:bg-white hover:text-black text-white font-bold">Place Order
-                    <img width='30px' className='mb-1 ml-1' src={buy} alt="" />
-                </button>
+                <Link to={`service/${_id}`} class="btn btn-primary hover:bg-white hover:text-black text-white font-bold">Place Order <img width='25px' className='mb-1 ml-1' src={buy} alt="" /></Link>
+                {/* <button class="btn btn-primary hover:bg-white hover:text-black text-white font-bold">Place Order */}
+                {/* <img width='25px' className='mb-1 ml-1' src={buy} alt="" /> */}
+                {/* </button> */}
             </div>
         </div >
     );

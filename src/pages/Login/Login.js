@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import useToken from '../../hooks/useToken';
 import Navbar from '../Home/Navbar';
@@ -13,6 +13,8 @@ const Login = () => {
     const [signInWithEmailAndPassword, user, loading, error,] = useSignInWithEmailAndPassword(auth);
     const [token] = useToken(user);
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location?.state?.from?.pathname || '/';
 
     const formSubmit = async (data) => {
         await signInWithEmailAndPassword(data.email, data.password);
@@ -23,7 +25,7 @@ const Login = () => {
         return <Loading></Loading>
     }
     if (token) {
-        navigate('/', { replace: true });
+        navigate(from, { replace: true });
     }
 
     return (

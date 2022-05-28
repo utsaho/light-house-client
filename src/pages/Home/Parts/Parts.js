@@ -14,7 +14,7 @@ const Parts = () => {
     }, []);
     return (
         <div className='px-12'>
-            <h2 className="text-4xl">Total parts: {parts.length}</h2>
+            <h2 className="text-5xl text-center divider my-12 font-bold">Tools</h2>
             <div className='grid lg:grid-cols-3 gap-4  md:grid-cols-2 grid-cols-1'>
                 {
                     parts.map(part => <Part key={part._id} part={part} />)
