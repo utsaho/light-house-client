@@ -61,7 +61,13 @@ const Register = () => {
                                 <label className="label my-0 py-0">
                                     <span className="label-text">Name</span>
                                 </label>
-                                <input type="text" placeholder="Your name" className="input input-bordered" {...register('name')} />
+                                <input type="text" placeholder="Your name" className="input input-bordered" {...register('name', {
+                                    required: {
+                                        value: true,
+                                        message: 'You must provide your name!',
+                                    }
+                                })} />
+                                {errors?.name?.type === 'required' && <span className='text-red-500'>{errors.name?.message}</span>}
                             </div>
 
 
@@ -97,7 +103,7 @@ const Register = () => {
                             <div className="form-control">
                                 <div className="flex">
                                     <div className='mt-0.5'>
-                                        <input type="checkbox" class="checkbox checkbox-accent checkbox-sm" ref={check} id='policy' onClick={() => checked()} />
+                                        <input type="checkbox" className="checkbox checkbox-accent checkbox-sm" ref={check} id='policy' onClick={() => checked()} />
                                     </div>
                                     <div className=''>
                                         <span className='ml-2'>Accept <span className='text-blue-500'>terms and conditions</span></span>

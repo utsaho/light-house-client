@@ -64,6 +64,7 @@ const Login = () => {
                                     {errors?.password?.type === 'required' && <span className="label">{errors.password.message}</span>}
                                 </label>
                                 <label className="label font-bold mb-0 pb-0">
+                                    //! FORGET PASSWORD
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                             </div>

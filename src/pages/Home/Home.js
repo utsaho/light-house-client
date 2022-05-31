@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollButton from '../../components/ScrollButton';
 import Footer from '../Shared/Footer';
 import Banner from './Banner';
 import Navbar from './Navbar';
@@ -8,6 +9,7 @@ import Summary from './Summary';
 const Home = () => {
     return (
         <div >
+            <ScrollButton />
             <Navbar></Navbar>
             <Banner></Banner>
             <Parts></Parts>

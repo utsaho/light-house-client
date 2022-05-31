@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './pages/Shared/NotFound/NotFound';
 import Purchase from './pages/Purchase/Purchase';
 import RequireAuth from './pages/Login/RequireAuth';
+import Dashboard from './pages/Dashboard/Dashboard';
 function App() {
     return (
         <div className='home mx-auto'>
@@ -17,6 +18,9 @@ function App() {
                 <Route path='/register' element={<Register />} />
                 <Route path='/service/:id' element={<RequireAuth>
                     <Purchase />
+                </RequireAuth>} />
+                <Route path='/dashboard' element={<RequireAuth>
+                    <Dashboard />
                 </RequireAuth>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
