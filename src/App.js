@@ -9,6 +9,10 @@ import NotFound from './pages/Shared/NotFound/NotFound';
 import Purchase from './pages/Purchase/Purchase';
 import RequireAuth from './pages/Login/RequireAuth';
 import Dashboard from './pages/Dashboard/Dashboard';
+import MyOrders from './pages/Dashboard/MyOrders';
+import MyProfile from './pages/Dashboard/MyProfile';
+import AddAReview from './pages/Dashboard/AddAReview';
+
 function App() {
     return (
         <div className='home mx-auto'>
@@ -19,9 +23,15 @@ function App() {
                 <Route path='/service/:id' element={<RequireAuth>
                     <Purchase />
                 </RequireAuth>} />
+
+                {/* Nested Route */}
                 <Route path='/dashboard' element={<RequireAuth>
-                    <Dashboard />
-                </RequireAuth>} />
+                    <Dashboard /> </RequireAuth>} >
+                    <Route index element={<MyOrders />} />
+                    <Route path='myProfile' element={<MyProfile />} />
+                    <Route path='review' element={<AddAReview />} />
+                </Route>
+
                 <Route path='*' element={<NotFound />} />
             </Routes>
             <ToastContainer

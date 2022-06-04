@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import SendToTop from '../../../components/SendToTop';
 import buy from '../../../images/svg/buy.svg';
 
 const Part = ({ part }) => {
-    // const navigate = useNavigate();
     const { _id, name, img, description, minOrder, available, price } = part;
     return (
         <div className="card-compact w-full bg-base-100 shadow-xl rounded-2xl">
@@ -23,10 +23,7 @@ const Part = ({ part }) => {
                 </div>
             </div>
             <div className="card-actions justify-end m-2">
-                <Link to={`/service/${_id}`} onClick={() => {
-                    document.body.scrollTop = 0;
-                    document.documentElement.scrollTop = 0;
-                }} className="btn btn-primary hover:bg-white hover:text-black text-white font-bold">Place Order <img width='25px' className='mb-1 ml-1' src={buy} alt="" /></Link>
+                <Link to={`/service/${_id}`} onClick={SendToTop} className="btn btn-primary hover:bg-white hover:text-black text-white font-bold">Place Order <img width='25px' className='mb-1 ml-1' src={buy} alt="" /></Link>
             </div>
         </div >
     );
