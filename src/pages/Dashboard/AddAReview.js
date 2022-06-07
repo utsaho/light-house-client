@@ -6,6 +6,7 @@ import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 import privateAxios from '../../api/privateAxios';
 import { toast } from 'react-toastify';
+import PageTitle from '../Shared/PageTitle';
 
 const AddAReview = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -40,6 +41,7 @@ const AddAReview = () => {
 
     return (
         <div className="" style={{ backgroundImage: `url(${cardBakground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <PageTitle title='Review' />
             <div className="hero min-h-screen flex justify-center items-center">
                 <div className="rounded-lg flex-shrink-0 lg:max-w-lg w-96 shadow-2xl bg-base-700">
                     <form className="card-body" onSubmit={handleSubmit(reviewSubmit)}>
