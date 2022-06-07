@@ -18,20 +18,15 @@ const MyProfile = () => {
     const [collegeChange, setCollegeChange] = useState(false);
     const [locationChange, setLocationChange] = useState(false);
     const [birthDateChange, setBirthDateChange] = useState(false);
-    const toDay = `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`;
 
-    // console.log(user);
+    const toDay = `${new Date().getFullYear()}-${new Date().getMonth() < 10 ? '0' + new Date().getMonth() : new Date().getMonth()}-${new Date().getDay() < 10 ? '0' + new Date().getDay() : new Date().getDay()}`;
 
     if (loading || updating) {
         return <Loading />
     }
 
     const handleUpdate = (data) => {
-
-        console.log(data);
         console.log(toDay);
-        console.log(user);
-
     }
 
     return (
@@ -51,35 +46,35 @@ const MyProfile = () => {
                                     message: 'Name can\'t be empty',
                                 }
                             })} disabled={nameChange} contentEditable={!nameChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setNameChange(!nameChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setNameChange(!nameChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                         {/*//* Email */}
                         <div className="form-control flex flex-row mx-auto items-center mt-2">
                             <span className='mr-2'>Email: </span>
                             <input type="email" defaultValue={user.email} className='input input-bordered' {...register('email')} disabled={true} />
-                            {/* <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setNameChange(!nameChange)}><img src={editButton} width='25px' height='25px' alt="" /></button> */}
+                            {/* <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setNameChange(!nameChange)}><img src={editButton} width='25px' height='25px' alt="" /></label> */}
                         </div>
 
                         {/*//* Address */}
                         <div className="form-control flex flex-row mx-auto items-center mt-2">
                             <span className='mr-2'>Address: </span>
                             <input type="text" className='input input-bordered' {...register('address')} disabled={locationChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setLocationChange(!locationChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setLocationChange(!locationChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                         {/* //* School */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>School: </span>
                             <input type="text" className='input input-bordered' {...register('school')} disabled={schoolChange} contentEditable={!schoolChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setSchoolChange(!schoolChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setSchoolChange(!schoolChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                         {/* //* College */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>College: </span>
                             <input type="text" className='input input-bordered' {...register('school')} disabled={collegeChange} contentEditable={!collegeChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setCollegeChange(!collegeChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setCollegeChange(!collegeChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                     </div>
@@ -93,41 +88,42 @@ const MyProfile = () => {
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>Phone: </span>
                             <input type="text" className='input input-bordered' {...register('phone')} disabled={phoneChange} contentEditable={!phoneChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setPhoneChange(!phoneChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setPhoneChange(!phoneChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                         {/* //* Github */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>github: </span>
                             <input type="text" className='input input-bordered' {...register('github')} disabled={githubChange} contentEditable={!githubChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setGithubChange(!githubChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setGithubChange(!githubChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                         {/* //* facebook */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>Facebook: </span>
                             <input type="text" className='input input-bordered' {...register('facebook')} disabled={facebookChange} contentEditable={!facebookChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setFacebookChange(!facebookChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setFacebookChange(!facebookChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
+
                         {/* //* Linkdin */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>Linkdin: </span>
                             <input type="text" className='input input-bordered' {...register('linkdin')} disabled={linkdinChange} contentEditable={!linkdinChange} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setLinkdinChange(!linkdinChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setLinkdinChange(!linkdinChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
+                        {/* //* Date of Birth */}
                         <div className="form-control flex flex-row mx-auto items-center">
-                            <span className='mr-2'>Linkdin: </span>
-                            <input type="date" className='input input-bordered' {...register('birthDate')} disabled={birthDateChange} contentEditable={!birthDateChange} value="2018-07-22"
-                                min={toDay} max={``} />
-                            <button className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setBirthDateChange(!birthDateChange)}><img src={editButton} width='25px' height='25px' alt="" /></button>
+                            <span className='mr-2'>Birth Date: </span>
+                            <input type="date" className='input input-bordered' {...register('birthDate')} disabled={birthDateChange} contentEditable={!birthDateChange} defaultValue="2018-07-22" min='1971-12-17' max={toDay} />
+                            <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setBirthDateChange(!birthDateChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
                     </div>
 
 
                 </div>
 
-                {/* //* Update button */}
+                {/* //* Update label */}
                 <div className='w-full flex justify-end'>
                     <button className='btn text-white font-bold' style={{ background: 'linear-gradient(to left, rgb(58,117,183), rgb(118,80,175))' }}>Update</button>
                 </div>

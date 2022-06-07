@@ -40,12 +40,12 @@ const MyOrders = () => {
                 <input type="checkbox" id="deleteConfirmation" className="modal-toggle" />
                 <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box">
-                        <label for="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                        <label htmlFor="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                         <h3 className="font-bold text-lg">Are you sure to cancel this order?</h3>
                         {/* <p className="py-4">{selectedForDelete}</p> */}
                         <div className="modal-action">
-                            <label for="deleteConfirmation" onClick={() => CancelOrder(selectedForDelete.productId)} className="btn">Confirm</label>
-                            <label for="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn">Cancel</label>
+                            <label htmlFor="deleteConfirmation" onClick={() => CancelOrder(selectedForDelete.productId)} className="btn">Confirm</label>
+                            <label htmlFor="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn">Cancel</label>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@ const MyOrders = () => {
                                 <th>
                                     <button className="btn btn-success btn-sm">Pending</button> <br />
                                     {/* <button onClick={() => CancelOrder(order._id)} className="btn btn-ghost btn-sm mt-2">Cancel</button> */}
-                                    <label for="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Delete</label>
+                                    <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Delete</label>
                                 </th>
                             </tr>)
                         }
