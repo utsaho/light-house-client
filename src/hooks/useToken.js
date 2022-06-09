@@ -9,8 +9,7 @@ const useToken = (user) => {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json',
-                },
-                body: JSON.stringify({ email: email })
+                }
             }).then(res => res.json()).then(data => {
                 setToken(data.token);
                 localStorage.setItem('accessToken', data.token);

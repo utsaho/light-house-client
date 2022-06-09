@@ -7,6 +7,7 @@ import Loading from '../Shared/Loading';
 import privateAxios from '../../api/privateAxios';
 import { toast } from 'react-toastify';
 import PageTitle from '../Shared/PageTitle';
+import {useNavigate} from 'react-router-dom'
 
 const AddAReview = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -14,6 +15,7 @@ const AddAReview = () => {
     const reviewLength = 350;
     const defaultRating = '3.5';
     const [starRating, setStarRating] = useState(defaultRating);
+    const navigate = useNavigate();
 
     if (loading) {
         return <Loading />
@@ -26,6 +28,7 @@ const AddAReview = () => {
         await privateAxios.post('http://localhost:5000/postReview', review).then(res => {
             if (res?.data?.insertedId) {
                 toast.success('Thanks for your feedback. Your feedback is valuable to us');
+                navigate('/', {repace:true})
             }
             else {
                 toast.error('You cann\'t send feedback');

@@ -1,17 +1,21 @@
-// import { async } from '@firebase/util';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import privateAxios from '../../api/privateAxios';
 import auth from '../../firebase.init';
 import editButton from '../../images/svg/edit.svg';
 import Loading from '../Shared/Loading';
 import PageTitle from '../Shared/PageTitle';
+import { toast } from 'react-toastify';
 
 const MyProfile = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [user, loading] = useAuthState(auth);
-    const [cloudUser, setCloudUser] = useState({});
+    //* Getting user data from cloud : mongodb
+
+    const {data: cloudUser,isLoading, refetch}  = useQuery(['tempp'], async() => await privateAxios.get(`http://localhost:5000/getProfile/${user?.email}`).then(res => res.data?.user));
+
+    const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm();
     const [updateProfile, updating, error] = useUpdateProfile(auth);
     const [nameChange, setNameChange] = useState(true);
     const [facebookChange, setFacebookChange] = useState(true);
@@ -22,34 +26,43 @@ const MyProfile = () => {
     const [collegeChange, setCollegeChange] = useState(true);
     const [locationChange, setLocationChange] = useState(true);
     const [birthDateChange, setBirthDateChange] = useState(true);
+    const [change, setChange] = useState(true);
+    
 
     const toDay = `${new Date().getFullYear()}-${new Date().getMonth() < 10 ? '0' + new Date().getMonth() : new Date().getMonth()}-${new Date().getDay() < 10 ? '0' + new Date().getDay() : new Date().getDay()}`;
 
-    //* Getting user data from cloud : mongodb
-    useEffect(() => {
-        const run = async () => {
-            const email = user?.email;
-            await privateAxios.get(`http://localhost:5000/getProfile/${email}`).then(res => setCloudUser(res?.data?.user));
-        }
-        run().catch(console.dir);
-    }, [user]);
-
-    if (loading || updating) {
+    if (loading || updating || isLoading) {
         return <Loading />
     }
 
-
     const handleUpdate = async (data) => {
-        console.log(data);
-        data.email = user.email;
-        updateProfile({ displayName: data?.name });
-        await privateAxios.post('http://localhost:5000/updateProfile', data).then(res => console.log(res));
-    }
+        const values = getValues();
+        values.name = values.name || cloudUser?.name || user?.displayName;
+        values.address = values.address || cloudUser?.address;
+        values.school = values.school || cloudUser?.school;
+        values.college = values.college || cloudUser?.college;
+        values.phone = values.phone || cloudUser?.phone;
+        values.github = values.github || cloudUser?.github;
+        values.facebook = values.facebook || cloudUser?.facebook;
+        values.linkdin = values.linkdin || cloudUser?.linkdin;
+        values.birthDate = values.birthDate || cloudUser?.birthDate;
 
+        await privateAxios.post(`http://localhost:5000/updateProfile/${user?.email}`, values).then(res=>{
+            if(res.data?.modifiedCount){
+                toast.success('Congratulations ,Your profile has been updated!');
+            }
+            else{
+                toast.error('Something went worng while updating :(');
+            }
+        });
+        await updateProfile({displayName:values.name});
+        refetch();
+    }
+    
     return (
         <div className='h-full w-full grid place-items-center' style={{ background: 'linear-gradient(to right, red, black)' }}>
             <PageTitle title='Profile' />
-            <form className='rounded-lg bg-white px-12 py-10' onSubmit={handleSubmit(handleUpdate)}>
+            <form className='rounded-lg bg-white px-12 py-10' onSubmit={handleSubmit(handleUpdate)} onChange={()=>setChange(false)}>
                 <h2 className="text-2xl text-center font-bold pb-5">Update Profile</h2>
 
                 <div className='w-full lg:flex md:flex-none sm:flex-none'>
@@ -58,19 +71,14 @@ const MyProfile = () => {
                         {/*//* Name */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>Name: </span>
-                            <input type="text" className='input input-bordered' {...register('name', {
-                                required: {
-                                    value: true,
-                                    message: 'Name can\'t be empty',
-                                }
-                            })} disabled={nameChange} contentEditable={!nameChange} defaultValue={cloudUser?.name} />
+                            <input type="text" className='input input-bordered' {...register('name')} disabled={nameChange} contentEditable={!nameChange}  defaultValue={user?.displayName}/>
                             <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setNameChange(!nameChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
                         {/*//* Email */}
                         <div className="form-control flex flex-row mx-auto items-center mt-2">
                             <span className='mr-2'>Email:&#10240;</span>
-                            <input type="email" defaultValue={user.email} className='input input-bordered' {...register('email')} disabled={true} />
+                            <input type="email" className='input input-bordered' {...register('email')} disabled={true} defaultValue={user?.email} />
                         </div>
 
                         {/*//* Address */}
@@ -142,7 +150,7 @@ const MyProfile = () => {
 
                 {/* //* Update label */}
                 <div className='w-full flex justify-end'>
-                    <button className='btn text-white font-bold' style={{ background: 'linear-gradient(to left, rgb(58,117,183), rgb(118,80,175))' }}>Update</button>
+                    <button className={`btn text-white font-bold ${change && 'btn-disabled'}`} style={{ background: 'linear-gradient(to left, rgb(58,117,183), rgb(118,80,175))' }} >Update</button>
                 </div>
             </form>
         </div>

@@ -1,5 +1,5 @@
 import { signOut } from 'firebase/auth';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useLocation } from 'react-router-dom';
 import auth from '../../firebase.init';
@@ -7,10 +7,13 @@ import webLogo from '../../images/logos/website_logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import SendToTop from '../../components/SendToTop';
+import { useQuery } from 'react-query'
+import privateAxios from '../../api/privateAxios';
+
 const Navbar = () => {
     const [user] = useAuthState(auth);
+    const [name, setName] = useState(user?.displayName || '');
     const location = useLocation();
-
     const menu = <>
         <li> <Link to='/'> <FontAwesomeIcon icon={faHome} />Home </Link> </li>
         {!user && <>
@@ -20,7 +23,7 @@ const Navbar = () => {
         }
         {user && <>
             <li className='mx-auto'> <Link to='/dashboard'>Dashboard</Link> </li>
-            <button onClick={() => { signOut(auth); localStorage.removeItem('accessToken'); }} className='btn btn-ghost font-bold'>Logout ({user.displayName})</button>
+            <button onClick={() => { signOut(auth); localStorage.removeItem('accessToken'); }} className='btn btn-ghost font-bold'>Logout ({name})</button>
         </>}
 
     </>

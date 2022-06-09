@@ -11,7 +11,6 @@ const RequireAuth = ({ children }) => {
         return <Loading />;
     }
     if (!user) {
-        console.log(location);
         signOut(auth);
         return <Navigate to='/login' state={{ from: location }} />;
     }
