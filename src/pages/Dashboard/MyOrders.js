@@ -95,7 +95,6 @@ const MyOrders = () => {
                                 </th>
                             </tr>)
                         }
-
                     </tbody>
                 </table>
             </div>

@@ -12,6 +12,8 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import MyOrders from './pages/Dashboard/MyOrders';
 import MyProfile from './pages/Dashboard/MyProfile';
 import AddAReview from './pages/Dashboard/AddAReview';
+import ManageAllOrders from './pages/Dashboard/ManageAllOrders';
+import RequireAdmin from './hooks/RequireAdmin';
 
 function App() {
     return (
@@ -27,9 +29,10 @@ function App() {
                 {/* Nested Route */}
                 <Route path='/dashboard' element={<RequireAuth>
                     <Dashboard /> </RequireAuth>} >
-                    <Route index element={<MyOrders />} />
-                    <Route path='myProfile' element={<MyProfile />} />
-                    <Route path='review' element={<AddAReview />} />
+                    <Route index element={<MyProfile />} />
+                    <Route path='orders' element={<MyOrders />} />
+                    <Route path='review' element={ <AddAReview /> } />
+                    <Route path='manageAllOrders' element={ <RequireAdmin><ManageAllOrders/></RequireAdmin> } />
                 </Route>
 
                 <Route path='*' element={<NotFound />} />

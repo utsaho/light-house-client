@@ -51,6 +51,7 @@ const Purchase = () => {
         data.productName = name;
         data.img = img;
         data.price = data.quantity * price;
+        data.status = 'unpaid';
 
         await privateAxios.post('http://localhost:5000/postOrder', data).then(res => {
             if (res.data.insertedId) {
