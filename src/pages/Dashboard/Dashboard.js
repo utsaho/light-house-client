@@ -17,11 +17,11 @@ const Dashboard = () => {
 
     const [active, setActive] = useState('dashboard');
     const dashboardMenu = <div className='tabs tabs-boxed bg-white'>
-        {!admin && <li className={`tab w-full mx-0 px-0 ${active === 'dashboard' && 'tab-active'}`}><Link to='/dashboard' onClick={() => setActive('dashboard')} className='w-full h-full'>My Profile</Link> </li>}
+        <li className={`tab w-full mx-0 px-0 ${active === 'dashboard' && 'tab-active'}`}><Link to='/dashboard' onClick={() => setActive('dashboard')} className='w-full h-full'>My Profile</Link> </li>
 
         {!admin && <li className={`tab w-full mx-0 px-0 my-2 ${active === 'review' && 'tab-active'}`}><Link to='review' onClick={() => setActive('review')} className='w-full h-full'>Add A Review</Link> </li>}
 
-        <li className={`tab w-full mx-0 px-0 ${active === 'orders' && 'tab-active'}`}><Link to='orders' onClick={() => setActive('orders')} className='w-full h-full'>My Orders</Link> </li>
+        {!admin && <li className={`tab w-full mx-0 px-0 ${active === 'orders' && 'tab-active'}`}><Link to='orders' onClick={() => setActive('orders')} className='w-full h-full'>My Orders</Link> </li>}
 
         {admin && <li className={`tab w-full mx-0 px-0 my-2 ${active === 'manageAllOrders' && 'tab-active'}`}><Link to='manageAllOrders' onClick={() => setActive('manageAllOrders')} className='w-full h-full'>Manage All Orders</Link> </li>}
     </div>;

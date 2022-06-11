@@ -23,7 +23,7 @@ const Navbar = () => {
         }
         {user && <>
             <li className='mx-auto'> <Link to='/dashboard'>Dashboard</Link> </li>
-            <button onClick={() => { signOut(auth); localStorage.removeItem('accessToken'); }} className='btn btn-ghost font-bold'>Logout ({name})</button>
+            <button onClick={() => { signOut(auth); localStorage.removeItem('accessToken'); }} className='btn btn-ghost font-bold'>Logout ({name || user?.displayName})</button>
         </>}
 
     </>
