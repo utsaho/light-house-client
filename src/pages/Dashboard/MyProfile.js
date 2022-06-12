@@ -13,7 +13,7 @@ const MyProfile = () => {
     const [user, loading] = useAuthState(auth);
     //* Getting user data from cloud : mongodb
 
-    const {data: cloudUser,isLoading, refetch}  = useQuery(['tempp'], async() => await privateAxios.get(`http://localhost:5000/getProfile/${user?.email}`).then(res => res.data?.user));
+    const { data: cloudUser, isLoading, refetch } = useQuery(['tempp'], async () => await privateAxios.get(`http://localhost:5000/getProfile/${user?.email}`).then(res => res.data?.user));
 
     const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm();
     const [updateProfile, updating, error] = useUpdateProfile(auth);
@@ -27,9 +27,9 @@ const MyProfile = () => {
     const [locationChange, setLocationChange] = useState(true);
     const [birthDateChange, setBirthDateChange] = useState(true);
     const [change, setChange] = useState(true);
-    
 
-    const toDay = `${new Date().getFullYear()}-${new Date().getMonth() < 10 ? '0' + new Date().getMonth() : new Date().getMonth()}-${new Date().getDay() < 10 ? '0' + new Date().getDay() : new Date().getDay()}`;
+
+    const toDay = `${new Date().toLocaleDateString().split('/')[2]}-${parseInt(new Date().toLocaleDateString().split('/')[0]) < 10 ? ('0' + new Date().toLocaleDateString().split('/')[0]) : new Date().toLocaleDateString().split('/')[0]}-${parseInt(new Date().toLocaleDateString().split('/')[1]) < 10 ? ('0' + new Date().toLocaleDateString().split('/')[1]) : new Date().toLocaleDateString().split('/')[1]}`;
 
     if (loading || updating || isLoading) {
         return <Loading />
@@ -46,23 +46,24 @@ const MyProfile = () => {
         values.facebook = values.facebook || cloudUser?.facebook;
         values.linkdin = values.linkdin || cloudUser?.linkdin;
         values.birthDate = values.birthDate || cloudUser?.birthDate;
+        values.timeAndDate = toDay + ' ' + new Date().toLocaleTimeString();
 
-        await privateAxios.post(`http://localhost:5000/updateProfile/${user?.email}`, values).then(res=>{
-            if(res.data?.modifiedCount){
+        await privateAxios.post(`http://localhost:5000/updateProfile/${user?.email}`, values).then(res => {
+            if (res.data?.modifiedCount) {
                 toast.success('Congratulations ,Your profile has been updated!');
             }
-            else{
+            else {
                 toast.error('Something went worng while updating :(');
             }
         });
-        await updateProfile({displayName:values.name});
+        await updateProfile({ displayName: values.name });
         refetch();
     }
-    
+
     return (
         <div className='h-full w-full grid place-items-center' style={{ background: 'linear-gradient(to right, red, black)' }}>
             <PageTitle title='Profile' />
-            <form className='rounded-lg bg-white px-12 py-10' onSubmit={handleSubmit(handleUpdate)} onChange={()=>setChange(false)}>
+            <form className='rounded-lg bg-white px-12 py-10' onSubmit={handleSubmit(handleUpdate)} onChange={() => setChange(false)}>
                 <h2 className="text-2xl text-center font-bold pb-5">Update Profile</h2>
 
                 <div className='w-full lg:flex md:flex-none sm:flex-none'>
@@ -71,7 +72,7 @@ const MyProfile = () => {
                         {/*//* Name */}
                         <div className="form-control flex flex-row mx-auto items-center">
                             <span className='mr-2'>Name: </span>
-                            <input type="text" className='input input-bordered' {...register('name')} disabled={nameChange} contentEditable={!nameChange}  defaultValue={user?.displayName}/>
+                            <input type="text" className='input input-bordered' {...register('name')} disabled={nameChange} contentEditable={!nameChange} defaultValue={user?.displayName} />
                             <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setNameChange(!nameChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
 
@@ -149,7 +150,10 @@ const MyProfile = () => {
                 </div>
 
                 {/* //* Update label */}
-                <div className='w-full flex justify-end'>
+                <div className='w-full flex justify-end mt-3'>
+                    <div className='w-full flex justify-start'>
+                        <span>Last updated: {cloudUser?.timeAndDate}</span>
+                    </div>
                     <button className={`btn text-white font-bold ${change && 'btn-disabled'}`} style={{ background: 'linear-gradient(to left, rgb(58,117,183), rgb(118,80,175))' }} >Update</button>
                 </div>
             </form>

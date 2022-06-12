@@ -30,13 +30,13 @@ const ManageAllOrders = () => {
     }
 
     //* Changing status to shipped
-    const shipped = async(id) =>{
-        await privateAxios.put(`http://localhost:5000/shipped/${id}`).then(res=>{
-            if(res.data?.modifiedCount){
+    const shipped = async (id) => {
+        await privateAxios.put(`http://localhost:5000/shipped/${id}`).then(res => {
+            if (res.data?.modifiedCount) {
                 toast.success('Order shipped Successfully.!');
                 refetch();
             }
-            else{
+            else {
                 toast.error('Something went wrong');
             }
         });
@@ -71,7 +71,7 @@ const ManageAllOrders = () => {
                             </th>
                             <th>Name</th>
                             <th>Contact</th>
-                            <th>Payment</th>
+                            <th>Payment & Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -99,11 +99,14 @@ const ManageAllOrders = () => {
                                     <br />
                                     <span className="badge badge-ghost badge-sm">Phone: {order.phone}</span> <span className="badge badge-ghost badge-sm">Email: {order?.email}</span>
                                 </td>
-                                <td>{order.price}</td>
+                                <td>{order.price} <br />
+                                    <span className="badge badge-ghost badge-sm">Date: {order?.date}</span> <br />
+                                    <span className="badge badge-ghost badge-sm">Time: {order?.time}</span>
+                                </td>
                                 <th>
-                                    {order.status === 'unpaid' && <><button className="btn text-black btn-disabled btn-sm">Unpaid</button> <br /> <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 " onClick={() => setSelectedForDelete(order)} > Delete</label></> }
-                                    {order.status === 'paid' && <><button className="btn btn-disabled text-black btn-sm">Pending</button> <br />  <label className="btn btn-primary btn-sm mt-2" onClick={()=>shipped(order._id)}>Update</label></>}
-                                    {order.status === 'shipped' && <button className='btn btn-ghost text-black btn-disabled'>Shipped</button> }
+                                    {order.status === 'unpaid' && <><button className="btn text-black btn-disabled btn-sm">Unpaid</button> <br /> <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 " onClick={() => setSelectedForDelete(order)} > Delete</label></>}
+                                    {order.status === 'paid' && <><button className="btn btn-disabled text-black btn-sm">Pending</button> <br />  <label className="btn btn-primary btn-sm mt-2" onClick={() => shipped(order._id)}>Update</label></>}
+                                    {order.status === 'shipped' && <button className='btn btn-ghost text-black btn-disabled'>Shipped</button>}
                                 </th>
                             </tr>)
                         }

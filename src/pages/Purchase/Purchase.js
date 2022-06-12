@@ -43,6 +43,7 @@ const Purchase = () => {
 
     const { displayName, email } = user;
     const { name, img, description, minOrder, available, price } = service;
+    const toDay = `${new Date().toLocaleDateString().split('/')[2]}-${parseInt(new Date().toLocaleDateString().split('/')[0]) < 10 ? ('0' + new Date().toLocaleDateString().split('/')[0]) : new Date().toLocaleDateString().split('/')[0]}-${parseInt(new Date().toLocaleDateString().split('/')[1]) < 10 ? ('0' + new Date().toLocaleDateString().split('/')[1]) : new Date().toLocaleDateString().split('/')[1]}`;
 
     const formSubmit = async (data) => {
         data.name = displayName;
@@ -51,6 +52,8 @@ const Purchase = () => {
         data.productName = name;
         data.img = img;
         data.price = data.quantity * price;
+        data.date = toDay;
+        data.time = new Date().toLocaleTimeString();
         data.status = 'unpaid';
 
         await privateAxios.post('http://localhost:5000/postOrder', data).then(res => {

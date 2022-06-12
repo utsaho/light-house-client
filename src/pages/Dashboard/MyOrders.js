@@ -7,6 +7,7 @@ import { useQuery } from 'react-query'
 import { toast } from 'react-toastify';
 import privateAxios from '../../api/privateAxios';
 import PageTitle from '../Shared/PageTitle';
+import { Link, Navigate } from 'react-router-dom';
 
 const MyOrders = () => {
     const [user, loading] = useAuthState(auth);
@@ -18,6 +19,7 @@ const MyOrders = () => {
         return <Loading />
     }
 
+    //* Cancel the order
     const CancelOrder = async (id) => {
         await privateAxios.post(`http://localhost:5000/cancelOrder/${id}`, selectedForDelete).then(res => {
             if (res.data?.deletedCount) {
@@ -29,7 +31,6 @@ const MyOrders = () => {
             }
         });
     }
-
 
     return (
         <div className="overflow-x-auto w-full">
@@ -59,7 +60,7 @@ const MyOrders = () => {
                             </th>
                             <th>Name</th>
                             <th>Contact</th>
-                            <th>Payment</th>
+                            <th>Payment & Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -87,11 +88,13 @@ const MyOrders = () => {
                                     <br />
                                     <span className="badge badge-ghost badge-sm">Phone: {order.phone}</span>
                                 </td>
-                                <td>{order.price}</td>
+                                <td>{order.price} <br />
+                                    <span className="badge badge-ghost badge-sm">Date: {order?.date}</span> <br />
+                                    <span className="badge badge-ghost badge-sm">Time: {order?.time}</span>
+                                </td>
                                 <th>
-                                    <button className="btn btn-success btn-sm">Pending</button> <br />
-                                    {/* <button onClick={() => CancelOrder(order._id)} className="btn btn-ghost btn-sm mt-2">Cancel</button> */}
-                                    <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Delete</label>
+                                    <Link to='htl' className="btn btn-success btn-sm">Pay now</Link> <br />
+                                    <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Cancel</label>
                                 </th>
                             </tr>)
                         }
