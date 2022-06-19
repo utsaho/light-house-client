@@ -93,7 +93,7 @@ const MyOrders = () => {
                                     <span className="badge badge-ghost badge-sm">Time: {order?.time}</span>
                                 </td>
                                 <th>
-                                    <Link to='htl' className="btn btn-success btn-sm">Pay now</Link> <br />
+                                    <Link to={`/dashboard/payment/${order._id}`} className="btn btn-success btn-sm">Pay now</Link> <br />
                                     <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Cancel</label>
                                 </th>
                             </tr>)
