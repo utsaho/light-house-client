@@ -7,14 +7,14 @@ import { useQuery } from 'react-query'
 import { toast } from 'react-toastify';
 import privateAxios from '../../api/privateAxios';
 import PageTitle from '../Shared/PageTitle';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 
 const MyOrders = () => {
     const [user, loading] = useAuthState(auth);
     const [orders, setOrders] = useState([]);
     const [selectedForDelete, setSelectedForDelete] = useState({});
-
-    const { isLoading, refetch } = useQuery('orders', async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => setOrders(res.data)));
+    const location = useLocation();
+    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => setOrders(res.data)));
     if (loading || isLoading) {
         return <Loading />
     }
@@ -93,8 +93,9 @@ const MyOrders = () => {
                                     <span className="badge badge-ghost badge-sm">Time: {order?.time}</span>
                                 </td>
                                 <th>
-                                    <Link to={`/dashboard/payment/${order._id}`} className="btn btn-success btn-sm">Pay now</Link> <br />
-                                    <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Cancel</label>
+                                    {!order?.transactionId ? <><Link to={`/dashboard/payment/${order._id}`} className="btn btn-success btn-sm w-full">Pay Now</Link> <br /></> : <Link to={`/dashboard/payment/${order._id}`} className="btn btn-disabled btn-sm w-full text-black mb-1">Paid</Link>}
+                                    {!order?.transactionId && <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Cancel</label>}
+                                    {order?.transactionId && <span className='font-normal' > <br /> <span className='font-bold'>Txn: </span> {order.transactionId}</span>}
                                 </th>
                             </tr>)
                         }

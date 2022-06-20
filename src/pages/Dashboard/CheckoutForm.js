@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import privateAxios from '../../api/privateAxios';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Loading from '../Shared/Loading';
 
@@ -12,27 +12,28 @@ const CheckoutForm = () => {
     const [transactionId, setTransactionId] = useState('');
     const [loading, setLoading] = useState(false);
     const { id } = useParams();
-    const { data: product, isLoading, refetch } = useQuery(['singleProduct', id], async () => await privateAxios.get(`http://localhost:5000/order/${id}`).then(res => res.data));
-
+    const { data: product, isLoading } = useQuery(['singleProduct', id], async () => await privateAxios.get(`http://localhost:5000/order/${id}`).then(res => res.data));
+    const navigate = useNavigate();
     const stripe = useStripe();
     const elements = useElements();
     const [clientSecret, setClientSecret] = useState('');
 
     useEffect(() => {
         const updateStatus = async () => {
-            await privateAxios.patch(`http://localhost:5000/paid/${id}`).then(res => {
+            product.transactionId = transactionId;
+            setTransactionId('');
+            setLoading(true);
+            await privateAxios.patch(`http://localhost:5000/paid/${id}`, product).then(res => {
+                setLoading(false);
                 console.log(res);
             });
+            navigate('/dashboard/orders', { replace: true });
         }
-        if (transactionId) {
-            updateStatus().catch(console.dir);
-            setTransactionId(null);
-            return <Navigate to='/ldkfjldf' />;
-        }
-    }, [transactionId]);
+        if (transactionId) updateStatus();
+    }, [transactionId, id, product, navigate]);
 
-    if (isLoading || loading) {
-        return <Loading />
+    if (isLoading) {
+        return <Loading />;
     }
 
     const { price } = product;
@@ -40,18 +41,6 @@ const CheckoutForm = () => {
         await privateAxios.post('http://localhost:5000/create-payment-intent', { price }).then(res => setClientSecret(res.data?.clientSecret));
     }
     run().catch(console.dir);
-
-    // if (transactionId) {
-    //     console.log(transactionId);
-    //     const updateStatus = async () => {
-    //         await privateAxios.patch(`http://localhost:5000/paid/${id}`).then(res => {
-    //             setTransactionId(null);
-    //             console.log(res);
-    //         });
-    //         // await fetch(`http://localhost:5000/paid/${id}`).then(res => res.json()).then(data => console.log(data));
-    //     }
-    //     if (transactionId) updateStatus();
-    // }
 
     const handleSubmit = async event => {
         event.preventDefault();
@@ -64,7 +53,7 @@ const CheckoutForm = () => {
             return;
         }
 
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
+        const { error } = await stripe.createPaymentMethod({
             type: 'card',
             card
         });
@@ -84,7 +73,6 @@ const CheckoutForm = () => {
             },
         );
         setLoading(true);
-        //! disable button after subbmission
         if (intentError) {
             console.log(price);
             setCardError(intentError?.message);
@@ -100,30 +88,33 @@ const CheckoutForm = () => {
 
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <CardElement
-                options={{
-                    style: {
-                        base: {
-                            fontSize: '16px',
-                            color: '#424770',
-                            '::placeholder': {
-                                color: '#aab7c4',
+        <div className='w-full h-full'>
+            {(loading || isLoading) && <Loading />}
+            <form onSubmit={handleSubmit} className='h-fit' >
+                <CardElement
+                    options={{
+                        style: {
+                            base: {
+                                fontSize: '16px',
+                                color: '#424770',
+                                '::placeholder': {
+                                    color: '#aab7c4',
+                                },
+                            },
+                            invalid: {
+                                color: '#9e2146',
                             },
                         },
-                        invalid: {
-                            color: '#9e2146',
-                        },
-                    },
-                }}
-            />
-            <button className='btn btn-sm btn-success mt-2' type="submit" disabled={!stripe || !clientSecret || !payButtonClicked}>
-                Pay now
-            </button>
-            {cardError && <span className='text-red-500'> <br /> {cardError}</span>}
-            {cardSuccess && <span className='text-green-500'> <br /> {cardSuccess}</span>}
-            {transactionId && <span className='text-green-500'> <br />Transaction ID: <span className='text-black font-thin'>{transactionId}</span></span>}
-        </form>
+                    }}
+                />
+                <button className='btn btn-sm btn-success mt-2' type="submit" disabled={!stripe || !clientSecret || !payButtonClicked}>
+                    Pay now
+                </button>
+                {cardError && <span className='text-red-500'> <br /> {cardError}</span>}
+                {cardSuccess && <span className='text-green-500'> <br /> {cardSuccess}</span>}
+                {transactionId && <span className='text-green-500'> <br />Transaction ID: <span className='text-black font-thin'>{transactionId}</span></span>}
+            </form>
+        </div>
     );
 };
 

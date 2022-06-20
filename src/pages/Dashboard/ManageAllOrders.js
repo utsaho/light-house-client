@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import privateAxios from '../../api/privateAxios';
 import auth from '../../firebase.init';
@@ -11,8 +12,8 @@ const ManageAllOrders = () => {
     const [user, loading] = useAuthState(auth);
     const [orders, setOrders] = useState([]);
     const [selectedForDelete, setSelectedForDelete] = useState({});
-
-    const { isLoading, refetch } = useQuery('orders', async () => await privateAxios.get(`http://localhost:5000/allOrders`).then(res => setOrders(res.data)));
+    const location = useLocation();
+    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/allOrders`).then(res => setOrders(res.data)));
     if (loading || isLoading) {
         return <Loading />
     }
@@ -97,7 +98,7 @@ const ManageAllOrders = () => {
                                 <td>
                                     <span className='whitespace-pre-wrap'>{order.address}</span>
                                     <br />
-                                    <span className="badge badge-ghost badge-sm">Phone: {order.phone}</span> <span className="badge badge-ghost badge-sm">Email: {order?.email}</span>
+                                    <span className="badge badge-ghost badge-sm">Phone: {order.phone}</span> <br /> <span className="badge badge-ghost badge-sm">Email: {order?.email}</span>
                                 </td>
                                 <td>{order.price} <br />
                                     <span className="badge badge-ghost badge-sm">Date: {order?.date}</span> <br />
