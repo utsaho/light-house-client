@@ -4,6 +4,8 @@ import privateAxios from '../../api/privateAxios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Loading from '../Shared/Loading';
+import PageTitle from '../Shared/PageTitle';
+import { toast } from 'react-toastify';
 
 const CheckoutForm = () => {
     const [cardError, setCardError] = useState('');
@@ -27,6 +29,7 @@ const CheckoutForm = () => {
                 setLoading(false);
                 console.log(res);
             });
+            toast.success('Congratulations! You payment was successful');
             navigate('/dashboard/orders', { replace: true });
         }
         if (transactionId) updateStatus();
@@ -78,6 +81,7 @@ const CheckoutForm = () => {
             setCardError(intentError?.message);
             setCardSuccess('');
             setTransactionId('');
+
         }
         else {
             setTransactionId(paymentIntent?.id.split('_')[1]);
@@ -89,6 +93,7 @@ const CheckoutForm = () => {
     }
     return (
         <div className='w-full h-full'>
+            <PageTitle title='Payment' />
             {(loading || isLoading) && <Loading />}
             <form onSubmit={handleSubmit} className='h-fit' >
                 <CardElement

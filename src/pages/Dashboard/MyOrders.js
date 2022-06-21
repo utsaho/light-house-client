@@ -12,7 +12,8 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 const MyOrders = () => {
     const [user, loading] = useAuthState(auth);
     const [orders, setOrders] = useState([]);
-    const [selectedForDelete, setSelectedForDelete] = useState({});
+    const [selectedForCancel, setSelectedForCancel] = useState({});
+    // const [selectedForDelete, setSelectedForDelete] = useState({});
     const location = useLocation();
     const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => setOrders(res.data)));
     if (loading || isLoading) {
@@ -21,7 +22,7 @@ const MyOrders = () => {
 
     //* Cancel the order
     const CancelOrder = async (id) => {
-        await privateAxios.post(`http://localhost:5000/cancelOrder/${id}`, selectedForDelete).then(res => {
+        await privateAxios.post(`http://localhost:5000/cancelOrder/${id}`, selectedForCancel).then(res => {
             if (res.data?.deletedCount) {
                 toast.success('Order canceled Successfully');
                 refetch();
@@ -41,12 +42,12 @@ const MyOrders = () => {
                 <input type="checkbox" id="deleteConfirmation" className="modal-toggle" />
                 <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box">
-                        <label htmlFor="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                        <label htmlFor="deleteConfirmation" onClick={() => setSelectedForCancel([])} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                         <h3 className="font-bold text-lg">Are you sure to cancel this order?</h3>
                         {/* <p className="py-4">{selectedForDelete}</p> */}
                         <div className="modal-action">
-                            <label htmlFor="deleteConfirmation" onClick={() => CancelOrder(selectedForDelete.productId)} className="btn">Confirm</label>
-                            <label htmlFor="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn">Cancel</label>
+                            <label htmlFor="deleteConfirmation" onClick={() => CancelOrder(selectedForCancel.productId)} className="btn">Confirm</label>
+                            <label htmlFor="deleteConfirmation" onClick={() => setSelectedForCancel([])} className="btn">Cancel</label>
                         </div>
                     </div>
                 </div>
@@ -93,8 +94,14 @@ const MyOrders = () => {
                                     <span className="badge badge-ghost badge-sm">Time: {order?.time}</span>
                                 </td>
                                 <th>
-                                    {!order?.transactionId ? <><Link to={`/dashboard/payment/${order._id}`} className="btn btn-success btn-sm w-full">Pay Now</Link> <br /></> : <Link to={`/dashboard/payment/${order._id}`} className="btn btn-disabled btn-sm w-full text-black mb-1">Paid</Link>}
-                                    {!order?.transactionId && <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 w-full" onClick={() => setSelectedForDelete(order)} > Cancel</label>}
+                                    {!order?.transactionId ? <Link to={`/dashboard/payment/${order._id}`} className="btn btn-success btn-sm w-full">Pay Now</Link> : (order.status === 'shipped' ? <Link to={`/dashboard/payment/${order._id}`} className="btn btn-disabled btn-sm w-full text-black mb-1">Shipped</Link> : <Link to={`/dashboard/payment/${order._id}`} className="btn btn-disabled btn-sm w-full text-black mb-1">Paid</Link>)}
+
+                                    {/* Delete a order */}
+                                    {(!order?.transactionId) && <> <br /> <label htmlFor="deleteConfirmation" className="btn text-white btn-sm mt-2 w-full" onClick={() => setSelectedForCancel(order)} > cancel</label></>}
+
+                                    {/* Cancel button */}
+                                    {(order.status === 'shipped') && <> <br /> <label htmlFor="deleteConfirmation" className="btn text-white btn-sm mt-2 w-full" onClick={() => { order.quantity = 0; setSelectedForCancel(order) }} > Delete</label></>}
+
                                     {order?.transactionId && <span className='font-normal' > <br /> <span className='font-bold'>Txn: </span> {order.transactionId}</span>}
                                 </th>
                             </tr>)
