@@ -13,7 +13,6 @@ const MyOrders = () => {
     const [user, loading] = useAuthState(auth);
     const [orders, setOrders] = useState([]);
     const [selectedForCancel, setSelectedForCancel] = useState({});
-    // const [selectedForDelete, setSelectedForDelete] = useState({});
     const location = useLocation();
     const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => setOrders(res.data)));
     if (loading || isLoading) {

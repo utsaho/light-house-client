@@ -7,14 +7,15 @@ import Loading from '../Shared/Loading';
 import PageTitle from '../Shared/PageTitle';
 import { toast } from 'react-toastify';
 
-const CheckoutForm = () => {
+const CheckoutForm = (props) => {
+    const { id, product } = props;
     const [cardError, setCardError] = useState('');
     const [cardSuccess, setCardSuccess] = useState('');
     const [payButtonClicked, setPayButtonClicked] = useState(true);
     const [transactionId, setTransactionId] = useState('');
     const [loading, setLoading] = useState(false);
-    const { id } = useParams();
-    const { data: product, isLoading } = useQuery(['singleProduct', id], async () => await privateAxios.get(`http://localhost:5000/order/${id}`).then(res => res.data));
+
+
     const navigate = useNavigate();
     const stripe = useStripe();
     const elements = useElements();
@@ -27,17 +28,17 @@ const CheckoutForm = () => {
             setLoading(true);
             await privateAxios.patch(`http://localhost:5000/paid/${id}`, product).then(res => {
                 setLoading(false);
-                console.log(res);
+                if (res.data.modifiedCount) {
+                    toast.success('Congratulations! You payment was successful');
+                }
+                else {
+                    toast.error('Sorry, Something went wrong.');
+                }
             });
-            toast.success('Congratulations! You payment was successful');
             navigate('/dashboard/orders', { replace: true });
         }
         if (transactionId) updateStatus();
     }, [transactionId, id, product, navigate]);
-
-    if (isLoading) {
-        return <Loading />;
-    }
 
     const { price } = product;
     const run = async () => {
@@ -77,7 +78,6 @@ const CheckoutForm = () => {
         );
         setLoading(true);
         if (intentError) {
-            console.log(price);
             setCardError(intentError?.message);
             setCardSuccess('');
             setTransactionId('');
@@ -94,8 +94,9 @@ const CheckoutForm = () => {
     return (
         <div className='w-full h-full'>
             <PageTitle title='Payment' />
-            {(loading || isLoading) && <Loading />}
+            {(loading) && <Loading />}
             <form onSubmit={handleSubmit} className='h-fit' >
+                <h2 className="text-xl mb-2 font-bold text-green-500">Enter payment details</h2>
                 <CardElement
                     options={{
                         style: {
@@ -112,7 +113,7 @@ const CheckoutForm = () => {
                         },
                     }}
                 />
-                <button className='btn btn-sm btn-success mt-2' type="submit" disabled={!stripe || !clientSecret || !payButtonClicked}>
+                <button className='btn btn-sm btn-success mt-3' type="submit" disabled={!stripe || !clientSecret || !payButtonClicked}>
                     Pay now
                 </button>
                 {cardError && <span className='text-red-500'> <br /> {cardError}</span>}
