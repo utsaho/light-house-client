@@ -42,7 +42,7 @@ const MyOrders = () => {
                 <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box">
                         <label htmlFor="deleteConfirmation" onClick={() => setSelectedForCancel([])} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                        <h3 className="font-bold text-lg">Are you sure to cancel this order?</h3>
+                        <h3 className="font-bold text-lg">Are you sure to delete this order?</h3>
                         {/* <p className="py-4">{selectedForDelete}</p> */}
                         <div className="modal-action">
                             <label htmlFor="deleteConfirmation" onClick={() => CancelOrder(selectedForCancel.productId)} className="btn">Confirm</label>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import privateAxios from '../../api/privateAxios';
 import auth from '../../firebase.init';
 import useAdmin from '../../hooks/useAdmin';
@@ -15,19 +15,32 @@ const Dashboard = () => {
 
     // const {data: admin, isLoading} = useQuery(['isAdmin', user], async()=> await privateAxios.get(`http://localhost:5000/isAdmin/${user?.email}`).then(res=>res?.data?.status));
 
-    const [active, setActive] = useState('dashboard');
+    const location = useLocation();
+    const [active, setActive] = useState(location.pathname.split('/')[2] || 'dashboard');
     const dashboardMenu = <div className='tabs tabs-boxed bg-white'>
         <li className={`tab w-full mx-0 px-0 ${active === 'dashboard' && 'tab-active'}`}><Link to='/dashboard' onClick={() => setActive('dashboard')} className='w-full h-full'>My Profile</Link> </li>
 
-        {!admin && <li className={`tab w-full mx-0 px-0 my-2 ${active === 'review' && 'tab-active'}`}><Link to='review' onClick={() => setActive('review')} className='w-full h-full'>Add A Review</Link> </li>}
+        {
+            //* For User
+            !admin && <>
+                <li className={`tab w-full mx-0 px-0 my-2 ${active === 'review' && 'tab-active'}`}><Link to='review' onClick={() => setActive('review')} className='w-full h-full'>Add A Review</Link> </li>
+                <li className={`tab w-full mx-0 px-0 ${active === 'orders' && 'tab-active'}`}><Link to='orders' onClick={() => setActive('orders')} className='w-full h-full'>My Orders</Link> </li>
+            </>
+        }
 
-        {!admin && <li className={`tab w-full mx-0 px-0 ${active === 'orders' && 'tab-active'}`}><Link to='orders' onClick={() => setActive('orders')} className='w-full h-full'>My Orders</Link> </li>}
-
-        {admin && <li className={`tab w-full mx-0 px-0 my-2 ${active === 'manageAllOrders' && 'tab-active'}`}><Link to='manageAllOrders' onClick={() => setActive('manageAllOrders')} className='w-full h-full'>Manage All Orders</Link> </li>}
+        {
+            //* For Admin
+            admin && <>
+                <li className={`tab w-full mx-0 px-0 my-2 ${active === 'manageAllOrders' && 'tab-active'}`}><Link to='manageAllOrders' onClick={() => setActive('manageAllOrders')} className='w-full h-full'>Manage All Orders</Link> </li>
+                <li className={`tab w-full mx-0 px-0 my-2 ${active === 'addNewProduct' && 'tab-active'}`}><Link to='addNewProduct' onClick={() => setActive('addNewProduct')} className='w-full h-full'>Add New Product</Link> </li>
+                <li className={`tab w-full mx-0 px-0 my-2 ${active === 'makeAdmin' && 'tab-active'}`}><Link to='makeAdmin' onClick={() => setActive('makeAdmin')} className='w-full h-full'>Make Admin</Link> </li>
+                <li className={`tab w-full mx-0 px-0 my-2 ${active === 'manageProducts' && 'tab-active'}`}><Link to='manageProducts' onClick={() => setActive('manageProducts')} className='w-full h-full'>Manage Products</Link> </li>
+            </>
+        }
     </div>;
 
-    if( loading){
-        return <Loading/>
+    if (loading) {
+        return <Loading />
     }
     return (
         <div>

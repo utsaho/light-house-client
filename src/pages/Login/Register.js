@@ -11,7 +11,7 @@ import SocialLogin from './SocialLogin';
 
 const Register = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth);
+    const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const [agree, setAgree] = useState(false);
     const navigate = useNavigate();
@@ -23,7 +23,6 @@ const Register = () => {
 
     if (token) {
         navigate(from, { replace: true })
-
     }
 
     const checked = () => {
