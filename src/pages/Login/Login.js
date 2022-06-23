@@ -6,6 +6,7 @@ import auth from '../../firebase.init';
 import useToken from '../../hooks/useToken';
 import Navbar from '../Home/Navbar';
 import Loading from '../Shared/Loading';
+import PageTitle from '../Shared/PageTitle';
 import SocialLogin from './SocialLogin';
 
 const Login = () => {
@@ -31,6 +32,7 @@ const Login = () => {
     return (
         <div>
             <Navbar></Navbar>
+            <PageTitle title='Login' />
             <div className="" style={{ background: 'linear-gradient(to right, rgb(58,117,183), rgb(118,80,175))' }}>
                 <div className="hero min-h-screen flex justify-center items-center">
                     <div className="rounded-lg flex-shrink-0 lg:max-w-lg w-96 shadow-2xl bg-base-100">

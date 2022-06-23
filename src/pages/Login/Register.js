@@ -8,6 +8,7 @@ import Loading from '../Shared/Loading';
 import { toast } from 'react-toastify';
 import useToken from '../../hooks/useToken';
 import SocialLogin from './SocialLogin';
+import PageTitle from '../Shared/PageTitle';
 
 const Register = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -50,6 +51,7 @@ const Register = () => {
     return (
         <div>
             <Navbar></Navbar>
+            <PageTitle title='Signup' />
             <div className="" style={{ background: 'linear-gradient(to right, rgb(58,117,183), rgb(118,80,175))' }}>
                 <div className="hero min-h-screen flex justify-center items-center">
                     <div className="rounded-lg flex-shrink-0 lg:max-w-lg w-96 shadow-2xl bg-base-100 my-0 py-0">

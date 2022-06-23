@@ -151,9 +151,9 @@ const MyProfile = () => {
 
                 {/* //* Update label */}
                 <div className='w-full flex justify-end mt-3'>
-                    <div className='w-full flex justify-start'>
+                    {cloudUser?.timeAndDate && <div className='w-full flex justify-start'>
                         <span>Last updated: {cloudUser?.timeAndDate}</span>
-                    </div>
+                    </div>}
                     <button className={`btn text-white font-bold ${change && 'btn-disabled'}`} style={{ background: 'linear-gradient(to left, rgb(58,117,183), rgb(118,80,175))' }} >Update</button>
                 </div>
             </form>
