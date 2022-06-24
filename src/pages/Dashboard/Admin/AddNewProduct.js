@@ -6,6 +6,7 @@ import privateAxios from '../../../api/privateAxios';
 import auth from '../../../firebase.init';
 import Loading from '../../Shared/Loading';
 import PageTitle from '../../Shared/PageTitle';
+import { toast } from 'react-toastify';
 
 const AddNewProduct = () => {
     const [user, loading] = useAuthState(auth);
@@ -13,12 +14,27 @@ const AddNewProduct = () => {
     const { data: admin, isLoading } = useQuery(['imageStorageKey', user], async () => await privateAxios.get(`http://localhost:5000/imageStorageKey/${user.email}`));
     const submittedProduct = async (data) => {
         const formData = new FormData();
-        formData.append('image', data?.image[0]);
+        formData.append('image', data?.img[0]);
         await fetch(`https://api.imgbb.com/1/upload?expiration=600&key=${admin.data?.imageStorageKey}`, {
             method: 'POST',
             body: formData
-        }).then(res => res.json()).then(data => console.log(data));
-
+        }).then(res => res.json()).then(result => {
+            if (result.success) {
+                data.img = result?.data?.display_url;
+            }
+            else {
+                data.img = '';
+            }
+        });
+        await privateAxios.post(`http://localhost:5000/newProduct/${user?.email}`, data).then(res => {
+            if (res.data?.insertedId) {
+                toast.success('Product added successfully!');
+                reset();
+            }
+            else {
+                toast.error('Something went wrong :(');
+            }
+        });
     }
     if (loading || isLoading) {
         return <Loading />;
@@ -46,23 +62,22 @@ const AddNewProduct = () => {
                         {/*//* image */}
                         <div className="form-control mx-auto mt-2">
                             <h2 className='ml-2 mb-1'>Upload Photo</h2>
-                            <input type="file" className='input' {...register('image', {
+                            <input type="file" className='input' {...register('img', {
                                 required: {
                                     value: true,
                                     message: 'Enter product photo'
                                 }
                             })} />
-                            {errors?.image?.type === 'required' && <span className='text-red-600 ml-2'>{errors.image?.message}</span>}
+                            {errors?.img?.type === 'required' && <span className='text-red-600 ml-2'>{errors.img?.message}</span>}
                         </div>
 
                         {/*//* description */}
                         <div className="form-control mx-auto mt-2">
                             <h2 className='ml-2 mb-1'>Description</h2>
-                            {/* <input type="textarea" className='input input-bordered' {...register('address')} /> */}
                             <textarea placeholder='Enter short description' className='input input-bordered' name="" id="" cols="30" rows="10" {...register('description', {
                                 required: {
                                     value: true,
-                                    message: 'Enter shot description'
+                                    message: 'Enter short description'
                                 }
                             })} />
                             {errors?.description?.type === 'required' && <span className='text-red-600 ml-2'>{errors.description?.message}</span>}
@@ -78,25 +93,25 @@ const AddNewProduct = () => {
                         {/* //* Minimum Order */}
                         <div className="form-control mx-auto">
                             <h2 className='ml-2 mb-1'>Minimum Order</h2>
-                            <input type="number" placeholder='Minimum order' min={1} className='input input-bordered' {...register('minimumOrder', {
+                            <input type="number" placeholder='Minimum order' min={1} className='input input-bordered' {...register('minOrder', {
                                 required: {
                                     value: true,
                                     message: 'Minimum order is required'
                                 }
                             })} />
-                            {errors?.minimumOrder?.type === 'required' && <span className='text-red-600 ml-2'>{errors.minimumOrder?.message}</span>}
+                            {errors?.minOrder?.type === 'required' && <span className='text-red-600 ml-2'>{errors.minOrder?.message}</span>}
                         </div>
 
                         {/* //* Quantity */}
                         <div className="form-control mx-auto my-2">
                             <h2 className='ml-2 mb-1'>Quantity</h2>
-                            <input type="number" placeholder='Available products' min={1} className='input input-bordered' {...register('quantity', {
+                            <input type="number" placeholder='Available products' min={1} className='input input-bordered' {...register('available', {
                                 required: {
                                     value: true,
                                     message: 'Add at leat 1 product'
                                 }
                             })} />
-                            {errors?.quantity?.type === 'required' && <span className='text-red-600 ml-2'>{errors.quantity?.message}</span>}
+                            {errors?.available?.type === 'required' && <span className='text-red-600 ml-2'>{errors.available?.message}</span>}
                         </div>
 
                         {/* //* price */}

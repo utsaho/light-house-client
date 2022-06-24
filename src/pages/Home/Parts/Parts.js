@@ -1,17 +1,24 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import privateAxios from '../../../api/privateAxios';
+import Loading from '../../Shared/Loading';
 import Part from './Part';
 
 const Parts = () => {
     const [parts, setParts] = useState([]);
-    useEffect(() => {
-        const getData = async () => {
-            const data = await privateAxios.get('http://localhost:5000/services');
-            setParts(data.data);
-        }
-        getData();
-    }, []);
+    const { isLoading } = useQuery('parts', async () => await privateAxios.get('http://localhost:5000/services').then(res => setParts(res.data)));
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         // const data = await privateAxios.get('http://localhost:5000/services');
+    //         setParts(data.data);
+    //     }
+    //     getData();
+    // }, []);
+    if (isLoading) {
+        return <Loading />
+    }
+
     return (
         <div className='px-12'>
             <h2 className="text-5xl text-center divider my-12 font-bold">Tools</h2>

@@ -107,7 +107,7 @@ const ManageAllOrders = () => {
                                 <th>
                                     {order.status === 'unpaid' && <><button className="btn text-black btn-disabled btn-sm">Unpaid</button> <br /> <label htmlFor="deleteConfirmation" className="btn btn-ghost btn-sm mt-2 " onClick={() => setSelectedForDelete(order)} > Delete</label></>}
                                     {order.status === 'paid' && <><button className="btn btn-disabled text-black btn-sm">Pending</button> <br />  <label className="btn btn-primary btn-sm mt-2" onClick={() => shipped(order._id)}>Update</label></>}
-                                    {order.status === 'shipped' && <button className='btn btn-ghost text-black btn-disabled'>Shipped</button>}
+                                    {order.status === 'shipped' && <button className='btn btn-ghost btn-sm text-black btn-disabled'>Shipped</button>}
                                 </th>
                             </tr>)
                         }
