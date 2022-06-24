@@ -5,37 +5,61 @@ import privateAxios from '../../../api/privateAxios';
 import auth from '../../../firebase.init';
 import Loading from '../../Shared/Loading';
 import PageTitle from '../../Shared/PageTitle';
+import { toast } from 'react-toastify';
 
 const MakeAdmin = () => {
     const [user, loading] = useAuthState(auth);
+    const [loading2, setLoading2] = useState(false);
     const [users, setUsers] = useState([]);
     const [imageStorageKey, setImageStorageKey] = useState('');
+    const [searchByEmail, setSearchByEmail] = useState('');
+    const [fetching, setFetching] = useState(true);
     const storageKey = useRef();
+    const emailInput = useRef();
     const [selectedUser, setSelectedUser] = useState({});
-    const { isLoading } = useQuery('users', async () => await privateAxios.get(`http://localhost:5000/allUsers/${user?.email}`).then(res => {
+    const { isLoading, refetch } = useQuery('users', async () => await privateAxios.get(`http://localhost:5000/allUsers/${user?.email}`,).then(res => {
         setUsers(res.data.filter(temp => temp.email !== user.email));
-    }));
+    }), { enabled: fetching });
 
-    const removeAdmin = () => {
-        console.log('Removing from admin');
-    }
-
-    const makeAdmin = async () => {
+    const userAction = async () => {
+        setLoading2(true);
         selectedUser.imageStorageKey = imageStorageKey;
-        await privateAxios.put(`http://localhost:5000/adminSetting/${user?.email}`, selectedUser).then(res => console.log(res));
+        await privateAxios.put(`http://localhost:5000/adminSetting/${user?.email}`, selectedUser).then(res => {
+            if (res.data?.modifiedCount) {
+                if (!selectedUser?.admin) toast.success(`${selectedUser?.email} is now in admin panel.`);
+                else toast.success(`${selectedUser?.email} is not admin anymore.`);
+            }
+            else toast.error('something went wrong');
+        });
+        setLoading2(false);
+        setFetching(true);
+        refetch();
     }
 
-    const setKey = () => {
-        setImageStorageKey(storageKey.current.value);
+    const emailSearch = async () => {
+        setFetching(false);
+        await privateAxios.get(`http://localhost:5000/getProfile/${searchByEmail}`).then(res => {
+            if (res.data.length === 0) return setUsers([]);
+            else return setUsers([res.data]);
+        });
     }
 
-    if (isLoading || loading) {
+    if (isLoading || loading || loading2) {
         return <Loading />;
     }
 
     return (
         <div className="overflow-x-auto w-full">
+            {/* Search people */}
+            <input ref={emailInput} onChange={() => setSearchByEmail(emailInput.current?.value)} type="email" id='search' placeholder="Search by Email" className="input input-bordered input-accent w-full max-w-xs my-3 ml-2" />
+            <label htmlFor="search" className={`btn btn-primary ml-2 ${!searchByEmail && 'btn-disabled'}`} onClick={() => emailSearch()} >search</label>
+
+            {/* See button */}
+            <label className='btn bg-black text-white ml-10' onClick={() => setFetching(true)} >All User</label>
+
             <PageTitle title='Make Admin' />
+
+            {/* Users List */}
             <div className={`${!users.length && 'hidden'}`}>
 
                 {/* Confirmation for action */}
@@ -47,13 +71,12 @@ const MakeAdmin = () => {
                             !selectedUser?.admin &&
                             <>
                                 <span className='mt-2 ml-3'>Enter image storing key:</span> <br />
-                                <input type="text" onChange={() => setKey()} ref={storageKey} className='input input-bordered mt-1 ml-3' />
+                                <input type="text" onChange={() => setImageStorageKey(storageKey.current.value)} ref={storageKey} className='input input-bordered mt-1 ml-3' />
                             </>
                         }
                         <div className="modal-action">
                             <label htmlFor="userAction" onClick={() => {
-                                selectedUser.admin && removeAdmin();
-                                !selectedUser.admin && makeAdmin();
+                                userAction();
                             }} className={`btn ${(!selectedUser?.admin && !imageStorageKey) && 'btn-disabled'}`}>Confirm</label>
                             <label htmlFor="userAction" className="btn">Cancel</label>
                         </div>
@@ -81,11 +104,6 @@ const MakeAdmin = () => {
                                 </th>
                                 <td>
                                     <div className="flex items-center space-x-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle w-12 h-12">
-                                                <img src={user?.photoURL} alt={singleUser?.name} />
-                                            </div>
-                                        </div>
                                         <div>
                                             <div className="font-bold whitespace-pre-wrap	">{singleUser?.user?.name || user?.displayName}</div>
                                         </div>

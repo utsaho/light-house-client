@@ -11,9 +11,12 @@ import { toast } from 'react-toastify';
 
 const MyProfile = () => {
     const [user, loading] = useAuthState(auth);
+    const [imageStorageKey, setImageStorageKey] = useState('');
     //* Getting user data from cloud : mongodb
-
-    const { data: cloudUser, isLoading, refetch } = useQuery(['tempp'], async () => await privateAxios.get(`http://localhost:5000/getProfile/${user?.email}`).then(res => res.data?.user));
+    const { data: cloudUser, isLoading, refetch } = useQuery(['tempp'], async () => await privateAxios.get(`http://localhost:5000/getProfile/${user?.email}`).then(res => {
+        setImageStorageKey(res.data?.imageStorageKey || '');
+        return res.data?.user;
+    }));
 
     const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm();
     const [updateProfile, updating, error] = useUpdateProfile(auth);
@@ -26,6 +29,7 @@ const MyProfile = () => {
     const [collegeChange, setCollegeChange] = useState(true);
     const [locationChange, setLocationChange] = useState(true);
     const [birthDateChange, setBirthDateChange] = useState(true);
+    const [imageStorageKeyChange, setImageStorageKeyChange] = useState(true);
     const [change, setChange] = useState(true);
 
 
@@ -102,6 +106,16 @@ const MyProfile = () => {
                             <input type="text" defaultValue={cloudUser?.college} className='input input-bordered' {...register('college')} disabled={collegeChange} contentEditable={!collegeChange} />
                             <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setCollegeChange(!collegeChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
                         </div>
+
+                        {/* //* image Storage Key */}
+                        {
+                            imageStorageKey &&
+                            <div className="form-control flex flex-row mx-auto items-center my-2">
+                                <span className='mr-2'>imgStoringKey: </span>
+                                <input type="text" defaultValue={imageStorageKey} className='input input-bordered' {...register('imageStorageKey')} disabled={imageStorageKeyChange} contentEditable={!imageStorageKeyChange} />
+                                <label className='btn btn-ghost hover:bg-white mr-3 ml-3 p-0' onClick={() => setImageStorageKeyChange(!imageStorageKeyChange)}><img src={editButton} width='25px' height='25px' alt="" /></label>
+                            </div>
+                        }
 
                     </div>
 

@@ -26,13 +26,13 @@ const AddNewProduct = () => {
                 data.img = '';
             }
         });
-        await privateAxios.post(`http://localhost:5000/newProduct/${user?.email}`, data).then(res => {
+        await privateAxios.post(`http://localhost:5000/newProduct/${user?.email}`, data.img ? data : {}).then(res => {
             if (res.data?.insertedId) {
                 toast.success('Product added successfully!');
                 reset();
             }
             else {
-                toast.error('Something went wrong :(');
+                toast.error('make sure your image storing key is correct and Try again!');
             }
         });
     }
