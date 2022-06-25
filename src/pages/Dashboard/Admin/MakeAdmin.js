@@ -55,7 +55,10 @@ const MakeAdmin = () => {
             <label htmlFor="search" className={`btn btn-primary ml-2 ${!searchByEmail && 'btn-disabled'}`} onClick={() => emailSearch()} >search</label>
 
             {/* See button */}
-            <label className='btn bg-black text-white ml-10' onClick={() => setFetching(true)} >All User</label>
+            <label className='btn bg-black text-white ml-10' onClick={() => {
+                setFetching(true); emailInput.current.value
+                    = ''
+            }} >All User</label>
 
             <PageTitle title='Make Admin' />
 

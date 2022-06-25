@@ -14,7 +14,11 @@ const MyOrders = () => {
     const [orders, setOrders] = useState([]);
     const [selectedForCancel, setSelectedForCancel] = useState({});
     const location = useLocation();
-    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => setOrders(res.data)));
+    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => {
+        console.log(res.data.length)
+        // if (res.data.length) setOrders(res.data)
+        // else setOrders([res.data]);
+    }));
     if (loading || isLoading) {
         return <Loading />
     }

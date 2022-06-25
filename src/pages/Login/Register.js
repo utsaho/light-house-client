@@ -1,30 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Home/Navbar';
 import { useForm } from "react-hook-form";
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 import { toast } from 'react-toastify';
-import useToken from '../../hooks/useToken';
 import SocialLogin from './SocialLogin';
 import PageTitle from '../Shared/PageTitle';
+import useToken from '../../hooks/useToken';
 
 const Register = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+    const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const [agree, setAgree] = useState(false);
     const navigate = useNavigate();
-    const [token] = useToken(user);
+    const token = useToken(user?.user?.email);
+
     const check = useRef();
-    useToken(user);
-    const from = '/';
-
-
-    if (token) {
-        navigate(from, { replace: true })
-    }
+    const location = useLocation();
+    const from = location?.state?.from?.pathname || '/';
 
     const checked = () => {
         setAgree(check.current.checked);
@@ -34,18 +30,22 @@ const Register = () => {
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({
             displayName: data.name
-        })
+        });
         setAgree(false);
         reset();
     }
     useEffect(() => {
-        if (user) {
-            console.log(user);
+        if (user?.user) {
             toast.success(`Hello ${user?.user?.displayName ? user?.user?.displayName : user?.user?.email}, You are profile has been created`);
         }
     }, [user]);
+
     if (loading || updating) {
         return <Loading></Loading>
+    }
+
+    if (token) {
+        return <Navigate to={from} state={{ from: location }} />
     }
 
     return (

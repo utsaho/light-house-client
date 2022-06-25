@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
@@ -11,9 +11,11 @@ import PageTitle from '../Shared/PageTitle';
 const ManageAllOrders = () => {
     const [user, loading] = useAuthState(auth);
     const [orders, setOrders] = useState([]);
+    const [category, setCategory] = useState('all');
     const [selectedForDelete, setSelectedForDelete] = useState({});
     const location = useLocation();
-    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/allOrders`).then(res => setOrders(res.data)));
+    const { isLoading, refetch } = useQuery(['orders', category], async () => await privateAxios.get(`http://localhost:5000/allOrders/${category}`).then(res => setOrders(res.data)));
+
     if (loading || isLoading) {
         return <Loading />
     }
@@ -37,16 +39,27 @@ const ManageAllOrders = () => {
                 toast.success('Order shipped Successfully.!');
                 refetch();
             }
-            else {
-                toast.error('Something went wrong');
-            }
+            else toast.error('Something went wrong');
         });
+    }
+
+    //* Get orders by categories
+    const option = async (category) => {
+        // refetch();
+        await setCategory(category.target?.value);
+        refetch();
     }
 
 
     return (
         <div className="overflow-x-auto w-full">
             <PageTitle title='All Orders' />
+            <select onChange={option} class="select select-bordered w-full max-w-xs ml-2 mb-2 mt-2">
+                <option value='all'>All</option>
+                <option value='paid'>Paid</option>
+                <option value='unpaid'>Unpaid</option>
+                <option value='shipped'>Shipped</option>
+            </select>
             <div className={`${!orders.length && 'hidden'}`}>
 
                 {/* Confirmation for delete */}

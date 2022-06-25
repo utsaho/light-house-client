@@ -53,7 +53,7 @@ const MyProfile = () => {
         values.timeAndDate = toDay + ' ' + new Date().toLocaleTimeString();
 
         await privateAxios.post(`http://localhost:5000/updateProfile/${user?.email}`, values).then(res => {
-            if (res.data?.modifiedCount) {
+            if ((res.data?.modifiedCount) || (user?.displayName !== values?.name)) {
                 toast.success('Congratulations ,Your profile has been updated!');
             }
             else {

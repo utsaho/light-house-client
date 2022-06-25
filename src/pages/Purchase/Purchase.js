@@ -55,13 +55,15 @@ const Purchase = () => {
         data.date = toDay;
         data.time = new Date().toLocaleTimeString();
         data.status = 'unpaid';
+        // console.log(data);
 
         await privateAxios.post('http://localhost:5000/postOrder', data).then(res => {
+            console.log(res);
             if (res.data.insertedId) {
                 toast.success('Order placed successfully. Please check you orders');
             }
             else {
-                toast.success('Order Unavailable :(');
+                toast.error('Order Unavailable :(');
             }
         });
         reset();

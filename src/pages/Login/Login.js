@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import auth from '../../firebase.init';
 import useToken from '../../hooks/useToken';
 import Navbar from '../Home/Navbar';
@@ -10,23 +11,30 @@ import PageTitle from '../Shared/PageTitle';
 import SocialLogin from './SocialLogin';
 
 const Login = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm();
     const [signInWithEmailAndPassword, user, loading, error,] = useSignInWithEmailAndPassword(auth);
-    const [token] = useToken(user);
-    const navigate = useNavigate();
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+    const token = useToken(user?.user?.email);
     const location = useLocation();
     const from = location?.state?.from?.pathname || '/';
+    // const emailRef = useRef();
+    // const [emailChange, setEmailChange] = useState('');
 
     const formSubmit = async (data) => {
         await signInWithEmailAndPassword(data.email, data.password);
         reset();
     }
+    useEffect(() => {
+        if (user?.user) {
+            toast.success(`Welcome Back! ${user?.user?.displayName}`)
+        }
+    }, [user]);
 
-    if (loading) {
+    if (loading || sending) {
         return <Loading></Loading>
     }
     if (token) {
-        navigate(from, { replace: true });
+        return <Navigate to={from} state={{ from: location }} />
     }
 
     return (
@@ -66,8 +74,10 @@ const Login = () => {
                                     {errors?.password?.type === 'required' && <span className="label">{errors.password.message}</span>}
                                 </label>
                                 <label className="label font-bold mb-0 pb-0">
-                                    //! FORGET PASSWORD
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <span onClick={() => {
+                                        sendPasswordResetEmail(getValues()?.email);
+                                        toast.info(`Please Check you email: ${getValues()?.email}`)
+                                    }} className="label-text-alt cursor-pointer link-hover">Forgot password?</span>
                                 </label>
                             </div>
                             <div className="form-control">
