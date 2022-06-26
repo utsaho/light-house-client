@@ -15,13 +15,10 @@ const MyOrders = () => {
     const [selectedForCancel, setSelectedForCancel] = useState({});
     const location = useLocation();
     const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => {
-        console.log(res.data.length)
-        // if (res.data.length) setOrders(res.data)
-        // else setOrders([res.data]);
+        if (res.data.length) setOrders(res.data)
+        else setOrders([]);
     }));
-    if (loading || isLoading) {
-        return <Loading />
-    }
+    if (loading || isLoading) return <Loading />;
 
     //* Cancel the order
     const CancelOrder = async (id) => {

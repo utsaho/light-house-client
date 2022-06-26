@@ -7,15 +7,10 @@ import Part from './Part';
 
 const Parts = () => {
     const [parts, setParts] = useState([]);
-    const { isLoading } = useQuery('parts', async () => await privateAxios.get('http://localhost:5000/services').then(res => setParts(res.data)));
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         // const data = await privateAxios.get('http://localhost:5000/services');
-    //         setParts(data.data);
-    //     }
-    //     getData();
-    // }, []);
-    if (isLoading) {
+    const { isLoading: serviceLoading } = useQuery('parts', async () => await privateAxios.get('http://localhost:5000/services').then(res => setParts(res.data)));
+
+
+    if (serviceLoading) {
         return <Loading />
     }
 

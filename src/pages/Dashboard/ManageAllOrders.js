@@ -54,7 +54,7 @@ const ManageAllOrders = () => {
     return (
         <div className="overflow-x-auto w-full">
             <PageTitle title='All Orders' />
-            <select onChange={option} class="select select-bordered w-full max-w-xs ml-2 mb-2 mt-2">
+            <select onChange={option} className="select select-bordered w-full max-w-xs ml-2 mb-2 mt-2">
                 <option value='all'>All</option>
                 <option value='paid'>Paid</option>
                 <option value='unpaid'>Unpaid</option>
