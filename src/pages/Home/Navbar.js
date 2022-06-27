@@ -14,6 +14,7 @@ const Navbar = () => {
     const location = useLocation();
     const menu = <>
         <li> <Link to='/'> <FontAwesomeIcon icon={faHome} />Home </Link> </li>
+        <li> <Link to='/blogs'>Blogs</Link> </li>
         {!user && <>
             <li> <Link to='/login'>Login</Link> </li>
             <li className='mx-auto'> <Link to='/register'>Register</Link> </li>

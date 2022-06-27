@@ -14,9 +14,9 @@ const Home = () => {
             <PageTitle title='Home' />
             <ScrollButton />
             <Navbar></Navbar>
-            <Banner></Banner>
-            <Parts></Parts>
-            <Reviews />
+            {/* <Banner></Banner> */}
+            {/* <Parts></Parts> */}
+            {/* <Reviews /> */}
             <Summary></Summary>
             <Footer></Footer>
         </div>

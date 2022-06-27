@@ -73,7 +73,7 @@ const MakeAdmin = () => {
                         {
                             !selectedUser?.admin &&
                             <>
-                                <span className='mt-2 ml-3'>Enter image storing key:</span> <br />
+                                <span className='mt-2 ml-3'>Enter imagebb storing key:</span> <br />
                                 <input type="text" onChange={() => setImageStorageKey(storageKey.current.value)} ref={storageKey} className='input input-bordered mt-1 ml-3' />
                             </>
                         }
