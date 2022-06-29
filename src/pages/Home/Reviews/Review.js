@@ -9,10 +9,10 @@ const Review = ({ oneReview }) => {
         <div className="rounded-2xl w-full shadow-xl" style={{ backgroundImage: `url(${cardBackground})`, backgroundSize: 'cover' }}>
             <div className="card-body">
                 <div className="py-2 place-content-center flex items-center">
-                    <div className="w-20 mask mask-hexagon py-0 my-0">
+                    <div className="w-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden py-0 my-0">
                         <img src={img || blankPicture} alt='' />
                     </div>
-                    <div className='ml-2'>
+                    <div className='ml-4'>
                         <h2 className="text-md font-bold font-mono">{name}</h2>
                         <h2 className="text-sm text-slate-600 font-thin">{designation}</h2>
                         <h2 className='text-sm font-bold'>Rating: {rating} out-of 5</h2>

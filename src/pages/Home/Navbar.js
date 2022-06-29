@@ -1,5 +1,5 @@
 import { signOut } from 'firebase/auth';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useLocation } from 'react-router-dom';
 import auth from '../../firebase.init';
@@ -8,21 +8,56 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import SendToTop from '../../components/SendToTop';
 import Loading from '../Shared/Loading';
+import useAdmin from '../../hooks/useAdmin';
 
 const Navbar = () => {
     const [user, loading] = useAuthState(auth);
     const location = useLocation();
+
+    const admin = useAdmin();
+
+    const dashboardMenu = <div className='tabs tabs-boxed bg-transparent'>
+        <li className={`tab w-full mx-0 px-0 `}><Link to='/dashboard' className='w-full h-full text-black'>My Profile</Link> </li>
+
+        {
+            //* For User
+            !admin && <>
+                <li className={`tab w-full mx-0 px-0 my-2 `}><Link to='dashboard/review' className='w-full h-full text-black'>Add A Review</Link> </li>
+                <li className={`tab w-full mx-0 px-0 `}><Link to='dashboard/orders' className='w-full h-full text-black'>My Orders</Link> </li>
+            </>
+        }
+
+        {
+            //* For Admin
+            admin && <>
+                <li className={`tab w-full mx-0 px-0 my-2 `}><Link to='dashboard/manageAllOrders' className='w-full h-full text-black'>Manage All Orders</Link> </li>
+                <li className={`tab w-full mx-0 px-0 my-2 `}><Link to='dashboard/addNewProduct' className='w-full h-full text-black'>Add New Product</Link> </li>
+                <li className={`tab w-full mx-0 px-0 my-2 `}><Link to='dashboard/makeAdmin' className='w-full h-full text-black'>Make Admin</Link> </li>
+                <li className={`tab w-full mx-0 px-0 my-2 `}><Link to='dashboard/manageProducts' className='w-full h-full text-black'>Manage Products</Link> </li>
+            </>
+        }
+    </div>;
+
     const menu = <>
         <li> <Link to='/'> <FontAwesomeIcon icon={faHome} />Home </Link> </li>
         <li> <Link to='/blogs'>Blogs</Link> </li>
+        <li> <Link to='/myPortfolio'>My Portfolio</Link> </li>
         {!user && <>
             <li> <Link to='/login'>Login</Link> </li>
             <li className='mx-auto'> <Link to='/register'>Register</Link> </li>
         </>
         }
         {user && <>
-            <li className='mx-auto'> <Link to='/dashboard'>Dashboard</Link> </li>
-            <button onClick={() => { signOut(auth); localStorage.removeItem('accessToken'); }} className='btn btn-ghost font-bold'>Logout ({user?.displayName})</button>
+            <li class="dropdown dropdown-hover">
+                <label tabIndex="0" ><Link className='flex items-center' to='/dashboard'>Dashboard<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
+                </Link></label>
+                <ul tabIndex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {dashboardMenu}
+                </ul>
+            </li>
+
+
+            <button onClick={() => { signOut(auth); localStorage.removeItem('accessToken'); }} className='btn btn-ghost font-bold'>Logout ({user?.displayName.split(' ')[0]})</button>
         </>}
     </>
 
