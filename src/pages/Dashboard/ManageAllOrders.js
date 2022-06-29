@@ -68,7 +68,6 @@ const ManageAllOrders = () => {
                     <div className="modal-box">
                         <label htmlFor="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                         <h3 className="font-bold text-lg">Are you sure to cancel this order?</h3>
-                        {/* <p className="py-4">{selectedForDelete}</p> */}
                         <div className="modal-action">
                             <label htmlFor="deleteConfirmation" onClick={() => CancelOrder(selectedForDelete.productId)} className="btn">Confirm</label>
                             <label htmlFor="deleteConfirmation" onClick={() => setSelectedForDelete([])} className="btn">Cancel</label>

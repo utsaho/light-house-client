@@ -15,8 +15,19 @@ const Review = ({ oneReview }) => {
                     <div className='ml-4'>
                         <h2 className="text-md font-bold font-mono">{name}</h2>
                         <h2 className="text-sm text-slate-600 font-thin">{designation}</h2>
-                        <h2 className='text-sm font-bold'>Rating: {rating} out-of 5</h2>
-
+                        <div className="rating bg-transparent rating-sm rating-half">
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-1" checked={oneReview.rating === '0.5'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-2" checked={oneReview.rating === '1.0'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-1" checked={oneReview.rating === '1.5'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-2" checked={oneReview.rating === '2.0'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-1" checked={oneReview.rating === '2.5'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-2" checked={oneReview.rating === '3.0'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-1" checked={oneReview.rating === '3.5'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-2" checked={oneReview.rating === '4.0'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-1" checked={oneReview.rating === '4.5'} readOnly disabled />
+                            <input type="radio" name={oneReview._id} className="bg-yellow-600 mask mask-star-2 mask-half-2" checked={oneReview.rating === '5.0'} readOnly disabled />
+                        </div>
+                        <span className='text-sm ml-2'>{rating} star</span>
                     </div>
                 </div>
                 <p>

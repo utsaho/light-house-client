@@ -6,6 +6,7 @@ import auth from '../../../firebase.init';
 import Loading from '../../Shared/Loading';
 import PageTitle from '../../Shared/PageTitle';
 import { toast } from 'react-toastify';
+import blankImage from '../../../images/logos/blank-picture.jpg';
 
 const MakeAdmin = () => {
     const [user, loading] = useAuthState(auth);
@@ -107,6 +108,11 @@ const MakeAdmin = () => {
                                 </th>
                                 <td>
                                     <div className="flex items-center space-x-3">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle w-12 h-12">
+                                                <img src={singleUser?.photoURL || blankImage} alt={user?.displayName} />
+                                            </div>
+                                        </div>
                                         <div>
                                             <div className="font-bold whitespace-pre-wrap	">{singleUser?.user?.name || user?.displayName}</div>
                                         </div>

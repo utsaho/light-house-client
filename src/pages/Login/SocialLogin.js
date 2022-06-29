@@ -8,7 +8,6 @@ import googleSVG from '../../images/svg/google.svg';
 import Loading from '../Shared/Loading';
 const SocialLogin = () => {
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-    const navigate = useNavigate();
     const token = useToken(user?.user?.email);
     const location = useLocation();
     const from = location?.state?.from?.pathname || '/';

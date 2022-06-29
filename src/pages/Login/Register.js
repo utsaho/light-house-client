@@ -15,7 +15,6 @@ const Register = () => {
     const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const [agree, setAgree] = useState(false);
-    const navigate = useNavigate();
     const token = useToken(user?.user?.email);
 
     const check = useRef();

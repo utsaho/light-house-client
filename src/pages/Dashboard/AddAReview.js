@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import cardBakground from '../../images/background/card-background.jpg';
+import cardBackground from '../../images/background/card-background.jpg';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 import privateAxios from '../../api/privateAxios';
 import { toast } from 'react-toastify';
 import PageTitle from '../Shared/PageTitle';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const AddAReview = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -21,14 +21,17 @@ const AddAReview = () => {
         return <Loading />
     }
 
+    // console.log((new Date().toLocaleString()))
+
     const reviewSubmit = async (review) => {
         review.name = user.displayName;
         review.rating = starRating;
         review.img = user?.photoURL;
+        review.date = new Date().toLocaleString();
         await privateAxios.post('http://localhost:5000/postReview', review).then(res => {
             if (res?.data?.insertedId) {
                 toast.success('Thanks for your feedback. Your feedback is valuable to us');
-                navigate('/', {repace:true})
+                navigate('/', { repace: true })
             }
             else {
                 toast.error('You cann\'t send feedback');
@@ -41,9 +44,8 @@ const AddAReview = () => {
         setStarRating(event.target.value);
     }
 
-
     return (
-        <div className="" style={{ backgroundImage: `url(${cardBakground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="" style={{ backgroundImage: `url(${cardBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <PageTitle title='Review' />
             <div className="hero min-h-screen flex justify-center items-center">
                 <div className="rounded-lg flex-shrink-0 lg:max-w-lg w-96 shadow-2xl bg-base-700">
@@ -54,9 +56,6 @@ const AddAReview = () => {
                                 <span className="label-text">Name</span>
                             </label>
                             <input type="text" defaultValue={user.displayName} placeholder={user.displayName} className={`input input-bordered ${errors.email ? 'input-error' : ''}`} {...register('name')} readOnly disabled />
-                            {/* <label className="label my-0 py-0">
-                                {errors?.name?.type === 'required' && <span className="label text-red-500">{errors.name.message}</span>}
-                            </label> */}
                         </div>
                         <div className="form-control">
                             <label className="label mt-0 pt-0">

@@ -12,8 +12,8 @@ const MyPortfolio = () => {
             <Navbar />
             <div className='px-12 mt-5'>
                 <div className='lg:flex lg:flex-row sm:flex-col'>
-                    <div class="lg:w-fit sm:w-full flex justify-center">
-                        <div class="w-44 overflow-hidden h-fit rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <div className="lg:w-fit sm:w-full flex justify-center">
+                        <div className="w-44 overflow-hidden h-fit rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                             <img src={myImage} alt='owner profile' />
                         </div>
                     </div>
@@ -27,7 +27,7 @@ const MyPortfolio = () => {
                             <p> <FontAwesomeIcon icon={faMailBulk} /> <a href="mailto:pipul.boddyo@gmcil.com">pipul.boddyo@gmail.com</a> </p>
                             <p> <FontAwesomeIcon icon={faLocationArrow} /> Tilaghar, Sylhet, Bangladesh </p>
                         </div>
-                        <h2 className="text-2xl mt-2">List of technologies of Skills:</h2>
+                        <h2 className="text-2xl mt-2">List of technologies & Skills:</h2>
                         <div className="divider divider-vertical w-48 mt-[-0.5px] bg-black h-[0.1rem]"></div>
                         <div className='px-10'>
                             <ul className='list-disc'>
