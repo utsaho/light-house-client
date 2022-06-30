@@ -16,7 +16,7 @@ const Blogs = () => {
             <Navbar />
             <PageTitle title='My Blogs' />
             <div className='py-10 relative' style={{ background: 'linear-gradient(to right, rgb(58,117,183), rgb(118,80,175))' }}>
-                <div className='mx-60'>
+                <div className='mx-auto'>
                     {
                         qna.map((q, index) => <div key={index} tabIndex="0" className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box mb-1 px-3">
                             <input type="checkbox" className="peer" />
