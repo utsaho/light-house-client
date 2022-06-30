@@ -89,7 +89,7 @@ const MyOrders = () => {
                                     <br />
                                     <span className="badge badge-ghost badge-sm">Phone: {order.phone}</span>
                                 </td>
-                                <td>{order.price} <br />
+                                <td>${order.price} <br />
                                     <span className="badge badge-ghost badge-sm">Date: {order?.date}</span> <br />
                                     <span className="badge badge-ghost badge-sm">Time: {order?.time}</span>
                                 </td>

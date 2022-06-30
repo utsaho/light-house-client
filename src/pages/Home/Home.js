@@ -6,6 +6,7 @@ import Banner from './Banner';
 import Navbar from './Navbar';
 import Parts from './Parts/Parts';
 import Reviews from './Reviews/Reviews';
+import Subscribe from './Subscribe';
 import Summary from './Summary';
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
             <Parts></Parts>
             <Reviews />
             <Summary></Summary>
+            <Subscribe />
             <Footer></Footer>
         </div>
     );

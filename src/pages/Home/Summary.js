@@ -41,13 +41,11 @@ const Summary = () => {
             </div>
             <div className='lg:flex lg:flex-row md:flex-row sm:flex-col w-full'>
                 {
-                    temp.map(ttt => {
-                        return <div className='w-full flex flex-col justify-center items-center mb-10'>
-                            <img src={ttt.img} width='30%' alt="" />
-                            <h2 className="text-6xl font-bold text-center">{ttt.value}+</h2>
-                            <h2 className="text-xl text-orange-600 text-center">{ttt.message}</h2>
-                        </div>
-                    })
+                    temp.map((ttt, index) => <div key={index} className='w-full flex flex-col justify-center items-center mb-10'>
+                        <img src={ttt.img} width='30%' alt="" />
+                        <h2 className="text-6xl font-bold text-center">{ttt.value}+</h2>
+                        <h2 className="text-xl text-orange-600 text-center">{ttt.message}</h2>
+                    </div>)
                 }
             </div>
         </div >
