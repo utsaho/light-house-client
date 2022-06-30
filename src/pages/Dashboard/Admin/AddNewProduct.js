@@ -74,7 +74,7 @@ const AddNewProduct = () => {
                         {/*//* description */}
                         <div className="form-control mx-auto mt-2">
                             <h2 className='ml-2 mb-1'>Description</h2>
-                            <textarea placeholder='Enter short description' className='input input-bordered' name="" id="" maxLength='250' {...register('description', {
+                            <textarea placeholder='Enter short description' className='input input-bordered' name="" id="" maxLength='100' {...register('description', {
                                 required: {
                                     value: true,
                                     message: 'Enter short description'
