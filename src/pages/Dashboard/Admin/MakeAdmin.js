@@ -18,14 +18,14 @@ const MakeAdmin = () => {
     const storageKey = useRef();
     const emailInput = useRef();
     const [selectedUser, setSelectedUser] = useState({});
-    const { isLoading, refetch } = useQuery('users', async () => await privateAxios.get(`http://localhost:5000/allUsers/${user?.email}`,).then(res => {
+    const { isLoading, refetch } = useQuery('users', async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/allUsers/${user?.email}`,).then(res => {
         setUsers(res.data.filter(temp => temp.email !== user.email));
     }), { enabled: fetching });
 
     const userAction = async () => {
         setLoading2(true);
         selectedUser.imageStorageKey = imageStorageKey;
-        await privateAxios.put(`http://localhost:5000/adminSetting/${user?.email}`, selectedUser).then(res => {
+        await privateAxios.put(`https://guarded-wave-32524.herokuapp.com/adminSetting/${user?.email}`, selectedUser).then(res => {
             if (res.data?.modifiedCount) {
                 if (!selectedUser?.admin) toast.success(`${selectedUser?.email} is now in admin panel.`);
                 else toast.success(`${selectedUser?.email} is not admin anymore.`);
@@ -39,7 +39,7 @@ const MakeAdmin = () => {
 
     const emailSearch = async () => {
         setFetching(false);
-        await privateAxios.get(`http://localhost:5000/getProfile/${searchByEmail}`).then(res => {
+        await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/getProfile/${searchByEmail}`).then(res => {
             if (res.data.length === 0) return setUsers([]);
             else return setUsers([res.data]);
         });

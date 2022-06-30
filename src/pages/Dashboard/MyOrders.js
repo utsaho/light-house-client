@@ -14,7 +14,7 @@ const MyOrders = () => {
     const [orders, setOrders] = useState([]);
     const [selectedForCancel, setSelectedForCancel] = useState({});
     const location = useLocation();
-    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`http://localhost:5000/orders/${user?.email}`).then(res => {
+    const { isLoading, refetch } = useQuery(['orders', location], async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/orders/${user?.email}`).then(res => {
         if (res.data.length) setOrders(res.data)
         else setOrders([]);
     }));
@@ -22,7 +22,7 @@ const MyOrders = () => {
 
     //* Cancel the order
     const CancelOrder = async (id) => {
-        await privateAxios.post(`http://localhost:5000/cancelOrder/${id}`, selectedForCancel).then(res => {
+        await privateAxios.post(`https://guarded-wave-32524.herokuapp.com/cancelOrder/${id}`, selectedForCancel).then(res => {
             if (res.data?.deletedCount) {
                 toast.success('Order canceled Successfully');
                 refetch();

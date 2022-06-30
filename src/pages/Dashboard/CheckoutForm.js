@@ -26,7 +26,7 @@ const CheckoutForm = (props) => {
             product.transactionId = transactionId;
             setTransactionId('');
             setLoading(true);
-            await privateAxios.patch(`http://localhost:5000/paid/${id}`, product).then(res => {
+            await privateAxios.patch(`https://guarded-wave-32524.herokuapp.com/paid/${id}`, product).then(res => {
                 setLoading(false);
                 if (res.data.modifiedCount) {
                     toast.success('Congratulations! You payment was successful');
@@ -42,7 +42,7 @@ const CheckoutForm = (props) => {
 
     const { price } = product;
     const run = async () => {
-        await privateAxios.post('http://localhost:5000/create-payment-intent', { price }).then(res => setClientSecret(res.data?.clientSecret));
+        await privateAxios.post('https://guarded-wave-32524.herokuapp.com/create-payment-intent', { price }).then(res => setClientSecret(res.data?.clientSecret));
     }
     run().catch(console.dir);
 

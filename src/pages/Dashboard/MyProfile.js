@@ -13,7 +13,7 @@ const MyProfile = () => {
     const [user, loading] = useAuthState(auth);
     const [imageStorageKey, setImageStorageKey] = useState('');
     //* Getting user data from cloud : mongodb
-    const { data: cloudUser, isLoading, refetch } = useQuery(['tempp'], async () => await privateAxios.get(`http://localhost:5000/getProfile/${user?.email}`).then(res => {
+    const { data: cloudUser, isLoading, refetch } = useQuery(['tempp'], async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/getProfile/${user?.email}`).then(res => {
         setImageStorageKey(res.data?.imageStorageKey || '');
         return res.data?.user;
     }));
@@ -52,7 +52,7 @@ const MyProfile = () => {
         values.birthDate = values.birthDate || cloudUser?.birthDate;
         values.timeAndDate = toDay + ' ' + new Date().toLocaleTimeString();
 
-        await privateAxios.post(`http://localhost:5000/updateProfile/${user?.email}`, values).then(res => {
+        await privateAxios.post(`https://guarded-wave-32524.herokuapp.com/updateProfile/${user?.email}`, values).then(res => {
             if ((res.data?.modifiedCount) || (user?.displayName !== values?.name)) {
                 toast.success('Congratulations ,Your profile has been updated!');
             }

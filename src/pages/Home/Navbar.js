@@ -18,7 +18,7 @@ const Navbar = () => {
     // if (loading) return <Loading />;
     // if (user?.email) {
     //     const run = async () => {
-    //         await privateAxios.get(`http://localhost:5000/isAdmin/${user.email}`).then(res => {
+    //         await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/isAdmin/${user.email}`).then(res => {
     //             if (res?.data?.status) {
     //                 return setAdmin(true);
     //             }

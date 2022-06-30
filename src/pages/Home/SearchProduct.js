@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import privateAxios from '../../api/privateAxios';
 import Footer from '../Shared/Footer';
+import PageTitle from '../Shared/PageTitle';
 import Navbar from './Navbar';
 import Part from './Parts/Part';
 
@@ -16,7 +17,7 @@ const SearchProduct = () => {
         if (search?.searchText) {
             searchRef.current.value = search.searchText;
             const run = async () => {
-                await axios.get(`http://localhost:5000/product/${search.searchText}`).then(res => setParts(res.data));
+                await axios.get(`https://guarded-wave-32524.herokuapp.com/product/${search.searchText}`).then(res => setParts(res.data));
             }
             run();
         }
@@ -29,6 +30,7 @@ const SearchProduct = () => {
     return (
         <div>
             <Navbar />
+            <PageTitle title={search.searchText || 'All Products'} />
             <div className={`px-12 w-full`}>
                 <div className='w-full flex justify-center'>
                     <div className="form-control mb-5">
@@ -48,7 +50,7 @@ const SearchProduct = () => {
                 </div>
             </div>
             <div className={`${parts.length && 'hidden h-screen w-screen'}`}>
-                <h2 className="text-5xl text-center h-screen">No Order Found</h2>
+                <h2 className="text-5xl text-center h-screen">No Product Found</h2>
             </div>
             <Footer />
         </div>

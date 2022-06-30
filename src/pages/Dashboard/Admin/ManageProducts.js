@@ -14,7 +14,7 @@ const ManageProducts = () => {
     const [products, setProducts] = useState([]);
     const [refetching, setRefetching] = useState(true);
     const [selectedForDelete, setSelectedForDelete] = useState({});
-    const { isLoading, refetch } = useQuery('products', async () => await privateAxios.get(`http://localhost:5000/services`).then(res => setProducts(res.data)), { enabled: refetching });
+    const { isLoading, refetch } = useQuery('products', async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/services`).then(res => setProducts(res.data)), { enabled: refetching });
 
     if (loading || isLoading) {
         return <Loading />
@@ -22,11 +22,11 @@ const ManageProducts = () => {
 
     const search = async () => {
         setRefetching(false);
-        await privateAxios.get(`http://localhost:5000/service/${searchByName}-name`).then(res => setProducts([res.data]));
+        await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/service/${searchByName}-name`).then(res => setProducts([res.data]));
     }
 
     const deleteProduct = async (id) => {
-        await privateAxios.post(`http://localhost:5000/product/${id}`, selectedForDelete).then(res => {
+        await privateAxios.post(`https://guarded-wave-32524.herokuapp.com/product/${id}`, selectedForDelete).then(res => {
             if (res.data?.deletedCount) {
                 toast.success('Product deleted Successfully');
                 refetch();

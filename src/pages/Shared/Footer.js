@@ -3,6 +3,8 @@ import instagram from '../../images/svg/instagram.wine.svg';
 import twitter from '../../images/svg/twitter.wine.svg';
 import facebook from '../../images/svg/facebook.wine.svg';
 import background from '../../images/background/Footer-Background.png';
+import { Link } from 'react-router-dom';
+import SendToTop from '../../components/SendToTop';
 const Footer = () => {
 
 
@@ -10,10 +12,10 @@ const Footer = () => {
         <footer className="footer footer-center p-10 bg-base-100 text-base-content rounded" style={{ background: `url(${background})` }}>
             <div>
                 <div className="grid grid-flow-col gap-4">
-                    <a className="link link-hover">About us</a>
-                    <a className="link link-hover">Contact</a>
-                    <a className="link link-hover">Jobs</a>
-                    <a className="link link-hover">Press kit</a>
+                    <span onClick={SendToTop}><Link to='/myPortfolio'>My Portfolio</Link></span>
+                    <span onClick={SendToTop}><Link to='/blogs'>Blogs</Link></span>
+                    <span onClick={SendToTop}><Link to='/product'>All Products</Link></span>
+                    <span onClick={SendToTop}><Link to='/dashboard'>Dashboard</Link></span>
                 </div>
                 <div>
                     <div className="grid grid-flow-col gap-4">

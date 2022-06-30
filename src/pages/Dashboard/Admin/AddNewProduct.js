@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 const AddNewProduct = () => {
     const [user, loading] = useAuthState(auth);
     const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm();
-    const { data: admin, isLoading } = useQuery(['imageStorageKey', user], async () => await privateAxios.get(`http://localhost:5000/imageStorageKey/${user.email}`));
+    const { data: admin, isLoading } = useQuery(['imageStorageKey', user], async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/imageStorageKey/${user.email}`));
     const submittedProduct = async (data) => {
         const formData = new FormData();
         formData.append('image', data?.img[0]);
@@ -26,7 +26,7 @@ const AddNewProduct = () => {
                 data.img = '';
             }
         });
-        await privateAxios.post(`http://localhost:5000/newProduct/${user?.email}`, data.img ? data : {}).then(res => {
+        await privateAxios.post(`https://guarded-wave-32524.herokuapp.com/newProduct/${user?.email}`, data.img ? data : {}).then(res => {
             if (res.data?.insertedId) {
                 toast.success('Product added successfully!');
                 reset();
@@ -74,7 +74,7 @@ const AddNewProduct = () => {
                         {/*//* description */}
                         <div className="form-control mx-auto mt-2">
                             <h2 className='ml-2 mb-1'>Description</h2>
-                            <textarea placeholder='Enter short description' className='input input-bordered' name="" id="" cols="30" rows="10" {...register('description', {
+                            <textarea placeholder='Enter short description' className='input input-bordered' name="" id="" maxLength='250' {...register('description', {
                                 required: {
                                     value: true,
                                     message: 'Enter short description'

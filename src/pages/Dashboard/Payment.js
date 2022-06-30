@@ -12,7 +12,7 @@ const stripePromise = loadStripe('pk_test_51L29GTBwPwunktj52EEDURapShMmOAI5BD71B
 
 const Payment = () => {
     const { id } = useParams();
-    const { data: product, isLoading } = useQuery(['singleProduct', id], async () => await privateAxios.get(`http://localhost:5000/order/${id}`).then(res => res.data));
+    const { data: product, isLoading } = useQuery(['singleProduct', id], async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/order/${id}`).then(res => res.data));
     // const { productName, quantity, price, img, address } = product;
 
     if (isLoading) {

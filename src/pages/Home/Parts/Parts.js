@@ -4,12 +4,13 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import privateAxios from '../../../api/privateAxios';
 import Loading from '../../Shared/Loading';
 import Part from './Part';
+import backgroundImage from '../../../images/background/white-bg.jpg';
 
 const Parts = () => {
     const [parts, setParts] = useState([]);
     const [searchLength, setSearchLength] = useState('');
     const searchRef = useRef();
-    const { isLoading: serviceLoading } = useQuery('parts', async () => await privateAxios.get('http://localhost:5000/services').then(res => setParts(res.data)));
+    const { isLoading: serviceLoading } = useQuery('parts', async () => await privateAxios.get('https://guarded-wave-32524.herokuapp.com/services').then(res => setParts(res.data)));
     const navigate = useNavigate();
 
     const searchNow = async () => {
@@ -24,7 +25,7 @@ const Parts = () => {
     }
 
     return (
-        <div className='px-12 w-full'>
+        <div className='px-12 w-full bg-repeat' style={{ backgroundImage: `url(${backgroundImage})`, backgroundRepeat: 'repeat-y' }}>
             <h2 className="text-5xl text-center divider my-12 font-bold">Tools</h2>
 
             <div className='w-full flex justify-center'>

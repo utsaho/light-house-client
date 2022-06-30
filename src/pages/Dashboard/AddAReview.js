@@ -28,7 +28,7 @@ const AddAReview = () => {
         review.rating = starRating;
         review.img = user?.photoURL;
         review.date = new Date().toLocaleString();
-        await privateAxios.post('http://localhost:5000/postReview', review).then(res => {
+        await privateAxios.post('https://guarded-wave-32524.herokuapp.com/postReview', review).then(res => {
             if (res?.data?.insertedId) {
                 toast.success('Thanks for your feedback. Your feedback is valuable to us');
                 navigate('/', { repace: true })

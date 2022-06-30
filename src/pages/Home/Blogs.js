@@ -7,7 +7,7 @@ import Navbar from './Navbar';
 
 const Blogs = () => {
 
-    const { data: qna, isLoading } = useQuery('qna', async () => await fetch('http://localhost:5000/qna').then(res => res.json()));
+    const { data: qna, isLoading } = useQuery('qna', async () => await fetch('https://guarded-wave-32524.herokuapp.com/qna').then(res => res.json()));
 
     if (isLoading) return <Loading />
 

@@ -31,11 +31,11 @@ const Purchase = () => {
     const [services, setServices] = useState([]);
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-    const { isLoading, refetch } = useQuery(['purchaseProduct', submit, id], async () => await privateAxios.get(`http://localhost:5000/service/${id}`).then(res => setService(res?.data)));
+    const { isLoading, refetch } = useQuery(['purchaseProduct', submit, id], async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/service/${id}`).then(res => setService(res?.data)));
 
     //* Also fetch
     useEffect(() => {
-        fetch(`http://localhost:5000/services/${id}`).then(res => res.json()).then(data => {
+        fetch(`https://guarded-wave-32524.herokuapp.com/services/${id}`).then(res => res.json()).then(data => {
             const temp = data.filter(d => d._id !== id);
             setServices(temp);
         });
@@ -56,7 +56,7 @@ const Purchase = () => {
         data.time = new Date().toLocaleTimeString();
         data.status = 'unpaid';
 
-        await privateAxios.post('http://localhost:5000/postOrder', data).then(res => {
+        await privateAxios.post('https://guarded-wave-32524.herokuapp.com/postOrder', data).then(res => {
             if (res.data.insertedId) {
                 toast.success('Order placed successfully. Please check you orders');
             }

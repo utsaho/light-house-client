@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
@@ -13,15 +13,14 @@ const ManageAllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [category, setCategory] = useState('all');
     const [selectedForDelete, setSelectedForDelete] = useState({});
-    const location = useLocation();
-    const { isLoading, refetch } = useQuery(['orders', category], async () => await privateAxios.get(`http://localhost:5000/allOrders/${category}`).then(res => setOrders(res.data)));
+    const { isLoading, refetch } = useQuery(['orders', category], async () => await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/allOrders/${category}`).then(res => setOrders(res.data)));
 
     if (loading || isLoading) {
         return <Loading />
     }
 
     const CancelOrder = async (id) => {
-        await privateAxios.post(`http://localhost:5000/cancelOrder/${id}`, selectedForDelete).then(res => {
+        await privateAxios.post(`https://guarded-wave-32524.herokuapp.com/cancelOrder/${id}`, selectedForDelete).then(res => {
             if (res.data?.deletedCount) {
                 toast.success('Order canceled Successfully');
                 refetch();
@@ -34,7 +33,7 @@ const ManageAllOrders = () => {
 
     //* Changing status to shipped
     const shipped = async (id) => {
-        await privateAxios.put(`http://localhost:5000/shipped/${id}`).then(res => {
+        await privateAxios.put(`https://guarded-wave-32524.herokuapp.com/shipped/${id}`).then(res => {
             if (res.data?.modifiedCount) {
                 toast.success('Order shipped Successfully.!');
                 refetch();

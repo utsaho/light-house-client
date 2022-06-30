@@ -5,10 +5,11 @@ import reviews from '../../images/svg/reviews.svg';
 import tools from '../../images/svg/tools.svg';
 import revenue from '../../images/svg/revenue.svg';
 import customers from '../../images/svg/happyClients.svg';
+import summeryBackground from '../../images/background/leaf-bg.jpg';
 
 const Summary = () => {
     const [summery, setSummery] = useState({});
-    const { isLoading: summeryLoading } = useQuery('summery', async () => await fetch('http://localhost:5000/summery').then(res => res.json()).then(data => setSummery(data)));
+    const { isLoading: summeryLoading } = useQuery('summery', async () => await fetch('https://guarded-wave-32524.herokuapp.com/summery').then(res => res.json()).then(data => setSummery(data)));
     if (summeryLoading) return <Loading />
     const temp = [
         {
@@ -33,7 +34,7 @@ const Summary = () => {
         }
     ]
     return (
-        <div className="w-full mt-10">
+        <div className="w-full pt-10" style={{ backgroundImage: `url(${summeryBackground})` }}>
             <div className='text-center'>
                 <h2 className="text-5xl text-orange-600 font-extrabold uppercase">Million business trust us</h2>
                 <h2 className="text-xl uppercase mt-2">Happy Client makes the business great</h2>

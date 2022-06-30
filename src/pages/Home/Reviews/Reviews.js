@@ -7,7 +7,7 @@ import Loading from '../../Shared/Loading';
 
 const Reviews = () => {
     const [reviews, setReviews] = useState([]);
-    const { isLoading } = useQuery('reviews', async () => await privateAxios.get('http://localhost:5000/reviews/6').then(res => setReviews(res?.data)));
+    const { isLoading } = useQuery('reviews', async () => await privateAxios.get('https://guarded-wave-32524.herokuapp.com/reviews/6').then(res => setReviews(res?.data)));
 
     if (isLoading) {
         return <Loading />

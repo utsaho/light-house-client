@@ -13,7 +13,7 @@ const Dashboard = () => {
     const [user, loading] = useAuthState(auth);
     const admin = useAdmin();
 
-    // const {data: admin, isLoading} = useQuery(['isAdmin', user], async()=> await privateAxios.get(`http://localhost:5000/isAdmin/${user?.email}`).then(res=>res?.data?.status));
+    // const {data: admin, isLoading} = useQuery(['isAdmin', user], async()=> await privateAxios.get(`https://guarded-wave-32524.herokuapp.com/isAdmin/${user?.email}`).then(res=>res?.data?.status));
 
     const location = useLocation();
     const [active, setActive] = useState(location.pathname.split('/')[2] || 'dashboard');

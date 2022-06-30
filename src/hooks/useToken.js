@@ -6,7 +6,7 @@ const useToken = (email) => {
     const [token, setToken] = useState('');
     const [user, loading] = useAuthState(auth);
     if (email) {
-        fetch(`http://localhost:5000/users/${email}`, {
+        fetch(`https://guarded-wave-32524.herokuapp.com/users/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
